@@ -1,0 +1,55 @@
+<div class="modal" id="modalUserEdit" tabindex="-1" role="dialog" aria-labelledby="modalTitle" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Edit user </h5>
+                <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/user_save" method="post" id="form_user_edit">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <label for="e_email">Email address</label>
+                            <input type="text" class="form-control" id="e_email" name="email">
+                        </div>
+                        <div class="col-xl-12">
+                            <label for="e_fullname">Full name</label>
+                            <input type="text" class="form-control" id="e_fullname" name="fullname">
+                        </div>
+                        <div class="col-xl-6">
+                            <label for="e_select_status">Status</label>
+                            <select class="select form-control" name="status" id="e_select_status">
+                                <option value="0">Disable</option>
+                                <option value="1">Enable</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-6">
+                            <label for="e_select_type">Type</label>
+                            <select class="select form-control" name="type" id="e_select_type">
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-12">
+                            <label for="e_detail">detail</label>
+                            <input type="text" class="form-control" id="e_detail" name="message">
+                        </div>
+                        <div class="col-xl-12">
+                            <label for="e_uright">User right</label>
+                            <textarea class="form-control" id="e_right" name="right" cols="80" rows="3"></textarea>
+                        </div>
+                        <input type="hidden" id="e_user_id" name="user_id" value="" />
+                        <input type="hidden" id="e_username" name="username" value="" />
+                        <input type="hidden" id="e_user_email" name="user_email" value="" />
+                    </div>
+                  </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" form="form_user_edit" class="btn btn-success btn-save-user" >Save</button>
+                <button type="button" class="btn btn-warning close" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

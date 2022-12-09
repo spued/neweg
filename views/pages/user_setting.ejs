@@ -1,0 +1,64 @@
+<%- include('./header'); %>
+<div class="container">
+    <div class="card mb-5">
+        <%- include('./topmenu'); %>
+    </div>
+    <div>
+        <div class="card">
+            <div class="card-header">
+                <h3>ข้อมูลผู้ใช้งาน</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-7">
+                                <div class="card p-3 py-4">
+                                    <div class="text-center">
+                                        <img src="/pub/img/businessman.png" width="100" class="rounded-circle">
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <span class="bg-secondary p-1 px-4 rounded text-white h5"><%= type %> : <%= username %></span>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <span class="bg-secondary p-1 px-4 rounded text-white h5"><%= fullname %></span>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <span class="bg-success p-1 px-4 rounded text-white h5"><%= message %></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12">
+                        <h5> <div class="text text-success">เปลี่ยนพาสเวิร์ด (มากกว่า 6 ตัวอักษร)</div></h5>
+                        <form action="/change_password" method="post" id="form_user_user_password">
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <label for="e_email">password</label>
+                                    <input type="password" class="form-control" id="u_password" name="passwd">
+                                </div>
+                                <div class="col-xl-12">
+                                    <label for="e_fullname">confirm</label>
+                                    <input type="password" class="form-control" id="u_password_confirm" name="passwd_confirm">
+                                </div>
+                                <input type="hidden" id="u_user_id" name="user_id" value="<%- _id %>" />
+                                <input type="hidden" id="u_username" name="username" value="<%- username %>" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="button" form="form_user_password" class="btn btn-success float-right btn-set-user-password" >Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../modals/modal_user_change_password'); %>
+
+<script type="text/javascript" src="/pub/js/bundle.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.12.1/datatables.min.js"></script>
+<script type="text/javascript" src="/pub/js/common.js"></script>
+<script type="text/javascript" src="/pub/js/user_setting.js" defer></script>
+<%- include('./footer'); %>

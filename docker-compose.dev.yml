@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+
+  server:
+    build: .
+    environment:
+      - CORS_WHITELIST=http://localhost:5000,http://localhost:3000
+      - DOMAIN=localhost
+    volumes:
+      - ./src/:/app/src/:Z
+    command: sh -c "/wait && nodemon /app/src/server"

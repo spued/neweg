@@ -1,0 +1,54 @@
+<%- include('./header'); %>
+<div class="container">
+    <div class="card mb-5">
+        <%- include('./topmenu'); %>
+    </div>
+    <div>
+        <div class="card">
+            <div class="card-header">
+                <div class="text-success h4"> รายการผู้ใช้งาน </div>
+                <button class="btn btn-warning btn-user-session-list" id="btn_user_session_list">Session List</button>
+                <button class="btn btn-warning btn-user-action-logs" id="btn_user_action_log">Activity log</button>
+            </div>
+            <div class="card-body">
+                <div class="row"></div>
+                    <div class="col-xl-12">
+                        <table id="user_table" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Email</th>
+                                    <th>Name</th>
+                                    <th>Detail</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../modals/modal_edit_user'); %>
+<%- include('../modals/modal_change_password'); %>
+<%- include('../modals/modal_user_session_list'); %>
+<%- include('../modals/modal_user_action_log'); %>
+<%- include('../modals/modal_loading'); %>
+
+<script type="text/javascript" src="/pub/js/bundle.js"></script>
+<script type="text/javascript" src="/js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.12.1/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="/pub/js/common.js"></script>
+<script type="text/javascript" src="/pub/js/user_man.js" defer></script>
+<%- include('./footer'); %>

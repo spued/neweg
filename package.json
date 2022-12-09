@@ -1,0 +1,75 @@
+{
+  "name": "aarx_dashboard",
+  "version": "1.0.0",
+  "description": "Simple NodeJS server with express providing basic authentification with mongodb",
+  "main": "server.js",
+  "scripts": {
+    "test": "docker-compose down --volumes && docker-compose -f docker-compose.yml -f docker-compose.test.yml up --build --abort-on-container-exit",
+    "dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build",
+    "start": "node src/server.js",
+    "start-docker": "docker-compose -f docker-compose.yml up --build",
+    "lint": "eslint src/ --ext .js"
+  },
+  "author": "Sunya J.",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "boostrap": "^2.0.0",
+    "bootstrap": "^5.2.2",
+    "browserify": "^17.0.0",
+    "browserify-css": "^0.15.0",
+    "chart.js": "^3.9.1",
+    "connect-mongo": "^4.6.0",
+    "cookie-parser": "^1.4.4",
+    "datatables.net": "^1.12.1",
+    "datatables.net-dt": "^1.12.1",
+    "datatables.net-jqui": "^1.12.1",
+    "dotenv": "^16.0.2",
+    "ejs": "^3.1.8",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.18.3",
+    "express": "^4.17.1",
+    "express-session": "^1.17.3",
+    "gulp": "^4.0.2",
+    "gulp-nodemon": "^2.5.0",
+    "helmet": "^3.21.3",
+    "http-status-codes": "^1.4.0",
+    "joi": "^14.3.1",
+    "jquery": "^3.6.1",
+    "jquery-browserify": "^1.8.1",
+    "mocha": "^7.1.0",
+    "mongoose": "^5.9.13",
+    "morgan": "^1.9.1",
+    "mysql": "^2.18.1",
+    "papaparse": "^5.3.2",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "popper.js": "^1.16.1",
+    "promise-mysql": "^5.2.0",
+    "serve-favicon": "^2.5.0",
+    "supertest": "^4.0.2",
+    "util": "^0.12.4",
+    "uuid": "^9.0.0",
+    "vinyl-source-stream": "^2.0.0",
+    "winston": "^3.2.1"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spued/aarx_dashboard.git"
+  },
+  "keywords": [
+    "aarx",
+    "dashboard"
+  ],
+  "bugs": {
+    "url": "https://github.com/spued/aarx_dashboard/issues"
+  },
+  "homepage": "https://github.com/spued/aarx_dashboard#readme"
+}

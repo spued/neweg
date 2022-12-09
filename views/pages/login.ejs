@@ -1,0 +1,42 @@
+<%- include('./header'); %>
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <div class="imgcontainer">
+            <img src="/pub/img/aarx_logo.jpg" alt="Banner" class="banner" />
+      </div>
+      <div class="center_text">
+        <h1 class="text text-info">Passive Optical Network quality index</h1>
+      </div>
+      
+    </div>
+    <div class="card-body">
+      <form action="/login" method="post">
+        <div class="row center_form">
+          <div class="col-xl-12">
+              <label for="uname">Username:</label>
+              <input class="form-control" type="text" placeholder="Enter Username" name="username" required>
+          </div>
+          <div class="col-xl-12">
+              <label for="psw">Password:</label>
+              <input class="form-control" type="password" placeholder="Enter Password" name="password" required>
+          </div>
+          <div class="col-xl-12">
+            <span>
+              <button class="form-control btn btn-info mt-3" type="submit">Login</button>
+            </span>
+          </div>
+          <div class="col-xl-12">
+            <div class="container h5" style="background-color:#f1f1f1">
+              <span class="psw"><a href="/register_request">ลงทะเบียนขอเข้าใช้งาน</a></span>
+            </div>
+          </div>
+          
+        </div>
+      </form>
+    </div>
+    <div class="card-footer">
+
+    </div>
+</div>
+<%- include('./footer'); %>

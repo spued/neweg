@@ -1,0 +1,58 @@
+<%- include('./header'); %>
+<div class="container">
+<div class="card">
+    <div class="card-header">
+    <div class="imgcontainer">
+            <img src="/pub/img/aarx_logo.jpg" alt="Banner" class="banner" />
+    </div>
+    <div class="center_text">
+        <h1 class="text text-info">Passive Optical Network quality index</h1>
+    </div>
+    
+    </div>
+    <div class="card-body">
+    <form action="/register" method="post" id="register_form">
+        <div class="row center_form">
+            <div class="col-xl-12">
+                <label class="text text-success" for="full_name">Full name:</label>
+                <input class="form-control" type="text" placeholder="Enter Full name" name="full_name" required>
+            </div>
+            <div class="col-xl-12">
+                <label class="text text-success" for="company_name">Company/Department:</label>
+                <input class="form-control" type="text" placeholder="Enter Company or Department" name="company_name" required>
+            </div>
+            <div class="col-xl-12">
+                <label class="text text-success" for="phone_number">Phone:</label>
+                <input class="form-control" type="text" placeholder="Enter phone number " name="phone_number" required>
+            </div>
+            <div class="col-xl-12">
+                <label class="text text-success" for="username">Email:</label>
+                <input class="form-control" type="text" placeholder="Enter Email for username" id="username" name="username" required>
+                <input type="hidden" id="email" name="email" value=""/>
+            </div>
+            <div class="col-xl-12">
+                <label class="text text-success" for="password">Password:</label>
+                <input class="form-control" type="password" placeholder="Enter Password" id="password" name="password" required>
+            </div>
+            <div class="col-xl-12">
+                <label class="text text-success" for="password_confirm">Confirm Password:</label>
+                <input class="form-control" type="password" placeholder="Enter Conform Password" id="password_confirm" name="password_confirm" required>
+            </div>
+            <div class="col-xl-12">
+                <label class="text text-success" for="request_message">Request message:</label>
+                <textarea class="form-control" col="80" row="5" name="request_message" required>-
+                </textarea>
+            </div>
+            <div class="col-xl-12">
+                <span>
+                <button class="form-control btn btn-info mt-3" type="button" form="register_form" onClick="register_submit()">Register</button>
+                </span>
+            </div>
+        </div>
+    </form>
+    </div>
+    <div class="card-footer">
+    </div>
+</div>
+<script type="text/javascript" src="/pub/js/register_request.js" defer></script>
+<%- include('./footer'); %>

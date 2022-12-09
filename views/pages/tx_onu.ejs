@@ -1,0 +1,59 @@
+<%- include('./header'); %>
+<div class="container">
+    <div class="card mb-5">
+        <%- include('./topmenu'); %>
+    </div>
+    <div>
+        <div class="card">
+            <div class="card-header">
+                
+                <div class="row">
+                    <div class="col-xl-12">
+                        <h6><span>TX ONU ของ จังหวัด:</span><span id="province_name">-</span></h6>
+                            <div class="province-button">
+                                <button class="btn btn-default btn-province" prefix="default" disabled>Choose :</button>
+                            </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <table id="tx_onu_table" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>NRSSP</th>
+                                    <th>ID</th>
+                                    <th>Type</th>
+                                    <th>S/N</th>
+                                    <th>Name</th>
+                                    <th>TX</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="col-xl-12">
+                        <div class="tx_graph">
+                            <canvas id="txChart"></canvas>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="current_prefix" value="">
+        <input type="hidden" id="current_master_id" value=0>
+        <input type="hidden" id="user_right" value="<%= right %>">
+    </div>
+</div>
+
+<%- include('../modals/modal_loading'); %>
+
+<script type="text/javascript" src="/pub/js/bundle.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.12.1/datatables.min.js"></script>
+<script type="text/javascript" src="/pub/js/common.js"></script>
+<script type="text/javascript" src="/pub/js/tx_onu.js" defer></script>
+<%- include('./footer'); %>
