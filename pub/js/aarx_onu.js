@@ -10,9 +10,9 @@ var master_id_data = null;
 var active_master_pon_count = [];
 var previous_master_pon_count = [];
 
-var pon_count_data = [{ 'pon_name': '-','pon_aarx': '0', 'good' : 0, 'bad' : 0 }];
+var pon_count_data = [{ 'pon_name': '-','pon_neweg': '0', 'good' : 0, 'bad' : 0 }];
 var pon_onu_data = [{ 'onu_id': 0, 'name' : '-', 'rx' : 0 }];
-var onu_nc_data = [{ 'onu_id': 0, 'NRSSP': '-' , 'name' : '-', 'rx' : 0, 'aarx' : 0 }];
+var onu_nc_data = [{ 'onu_id': 0, 'NRSSP': '-' , 'name' : '-', 'rx' : 0, 'neweg' : 0 }];
 var onu_nc_history_data = [{ 'pon_quantity': 0, 'previous': 0 , 'current' : 0}];
 
 var master_id_list = [];
@@ -59,7 +59,7 @@ $(function() {
     data:  pon_count_data ,
     columns: [
         { data: 'pon_name' },
-        { data: 'pon_aarx' },
+        { data: 'pon_neweg' },
         { data: 'good' },
         { data: 'bad' }
     ],
@@ -78,7 +78,7 @@ $(function() {
         { data: {},
           render: (data) => {
             let html = '';
-            if((data.rx - data.aarx) < (-2)) {
+            if((data.rx - data.neweg) < (-2)) {
               html='<i class="text text-danger">'+data.rx+'</i>';
             } else {
               html='<i class="text text-success">'+data.rx+'</i>';
@@ -109,7 +109,7 @@ $(function() {
       { data: 'onu_id' },
       { data: 'NRSSP' },
       { data: 'name' },
-      { data: 'aarx' },
+      { data: 'neweg' },
       { data: 'rx' }
     ],
     drawCallback: () => {
@@ -166,7 +166,7 @@ $('#province_rx_table').on('click', 'tbody td', function() {
   //console.log('TD cell textContent : ', this.textContent)
   pon_onu_data = [];
   let data = province_rx_table.row(this).data();
-  $("#ponName").text(data.pon_name + ' @RX ' + data.pon_aarx);
+  $("#ponName").text(data.pon_name + ' @RX ' + data.pon_neweg);
   $.post('/list_master_id', { prefix: $("#current_prefix").val() }, function(res) {
     //console.log(res);
     master_ids = res;
@@ -186,7 +186,7 @@ $('#province_rx_table').on('click', 'tbody td', function() {
           onu_id : item.ONU_ID,
           name: item.Name,
           rx: item.Received_Optical_Power,
-          aarx: data.pon_aarx
+          neweg: data.pon_neweg
         });
       })
       pon_onu_table.clear().rows.add(pon_onu_data).draw();

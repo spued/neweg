@@ -1,5 +1,5 @@
 {
-  "name": "aarx_dashboard",
+  "name": "neweg_dashboard",
   "version": "1.0.0",
   "description": "Simple NodeJS server with express providing basic authentification with mongodb",
   "main": "server.js",
@@ -62,14 +62,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spued/aarx_dashboard.git"
+    "url": "git+https://github.com/spued/neweg_dashboard.git"
   },
   "keywords": [
-    "aarx",
+    "neweg",
     "dashboard"
   ],
   "bugs": {
-    "url": "https://github.com/spued/aarx_dashboard/issues"
+    "url": "https://github.com/spued/neweg_dashboard/issues"
   },
-  "homepage": "https://github.com/spued/aarx_dashboard#readme"
+  "homepage": "https://github.com/spued/neweg_dashboard#readme"
 }

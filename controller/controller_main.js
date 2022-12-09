@@ -34,13 +34,13 @@ const getRegisterPage = (req,res) => {
     console.log("Controller: Main: Get register page");
     res.render('pages/register');
 }
-const getAarxOnuPage = (req,res) => {
-  console.log("Controller: Main: Get AARX ONU page");
+const getnewegOnuPage = (req,res) => {
+  console.log("Controller: Main: Get neweg ONU page");
   /* db.getOverAllNEData().then(function(rows) {
       // now you have your rows, you can see if there are <20 of them
         //console.log(rows);
   }).catch((err) => setImmediate(() => { throw err; })); */
-  res.render('pages/aarx_onu', req.user);
+  res.render('pages/neweg_onu', req.user);
 }
 const getTxOnuPage = (req,res) => {
   console.log("Controller: Main: Get TX ONU page");
@@ -321,7 +321,7 @@ module.exports = {
     getLogoutPage,
     getMainPage,
     getRegisterPage,
-    getAarxOnuPage,
+    getnewegOnuPage,
     getTxOnuPage,
     getUserMan,
     getUserSetting,

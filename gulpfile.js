@@ -6,7 +6,7 @@ const { watch, task, series, dest } = require('gulp');
 
 task('devel', async () => {
     gnodemon({
-      script: "server.js",
+      script: "app.js",
       require: '.env',
       ignore: [ 'node_modules/**',
                 'sessions/**',

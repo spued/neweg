@@ -3,7 +3,7 @@ const logger = require('../../lib/logger');
 var db_conn = require('../core/data_connection');
 
 function getOverAllNEData(data) {
-    let sql = "SELECT NE_Name,count(*) AS ne_count FROM aarx_status WHERE status = 1 " + 
+    let sql = "SELECT NE_Name,count(*) AS ne_count FROM neweg_status WHERE status = 1 " + 
     "AND NE_name REGEXP '" + data
     + "' GROUP BY substr(NE_Name, 1,3)";
     return new Promise(function(resolve, reject) {
@@ -15,7 +15,7 @@ function getOverAllNEData(data) {
     });
 }
 function getDataByPrefix(prefix) {
-    let sql = "SELECT count(*) AS ne_count FROM aarx_status WHERE status = 1 AND NE_Name LIKE '"+ prefix + "%'";
+    let sql = "SELECT count(*) AS ne_count FROM neweg_status WHERE status = 1 AND NE_Name LIKE '"+ prefix + "%'";
     //console.log(sql);
     return new Promise(function(resolve, reject) {
             db_conn.query(sql, function (err, rows, fields) {
@@ -25,7 +25,7 @@ function getDataByPrefix(prefix) {
     }); 
 }
 function get_PON_data_by_prefix(prefix) {
-    let sql = "SELECT NE_Name,count(*) AS ne_count FROM aarx_status WHERE status = 1 AND NE_Name LIKE '"+ prefix + "%' GROUP BY NE_Name";
+    let sql = "SELECT NE_Name,count(*) AS ne_count FROM neweg_status WHERE status = 1 AND NE_Name LIKE '"+ prefix + "%' GROUP BY NE_Name";
     //console.log(sql);
     return new Promise(function(resolve, reject) {
         db_conn.query(sql, function (err, rows, fields) {
@@ -35,7 +35,7 @@ function get_PON_data_by_prefix(prefix) {
     });
 }
 function getMasterIDByPrefix(prefix) {
-    let sql = "SELECT master_id,count(*) AS master_count FROM aarx_status WHERE status = 1 AND NE_Name LIKE '"+ prefix + "%' GROUP BY master_id ORDER BY create_at DESC";
+    let sql = "SELECT master_id,count(*) AS master_count FROM neweg_status WHERE status = 1 AND NE_Name LIKE '"+ prefix + "%' GROUP BY master_id ORDER BY create_at DESC";
     //console.log(sql);
     return new Promise(function(resolve, reject) {
         db_conn.query(sql, function (err, rows, fields) {
@@ -45,7 +45,7 @@ function getMasterIDByPrefix(prefix) {
     });
 }
 function getOverAllMasterData() {
-    let sql = "SELECT * FROM aarx_master WHERE status = 1 OR status = 2";
+    let sql = "SELECT * FROM neweg_master WHERE status = 1 OR status = 2";
     //console.log(db_conn);
     return new Promise(function(resolve, reject) {
             db_conn.query(sql, function (err, rows, fields) {
@@ -57,10 +57,10 @@ function getOverAllMasterData() {
 function getActiveMasterIDByPrefix(prefix) {
     // get active master id by status status 0 = last, 1 = previous
     // get all master id that use by those prefix
-    let sql = "SELECT master_id,count(*) AS master_count FROM aarx_status WHERE status = 1 AND NE_Name LIKE '"+ prefix + "%' GROUP BY master_id ORDER BY create_at DESC";
+    let sql = "SELECT master_id,count(*) AS master_count FROM neweg_status WHERE status = 1 AND NE_Name LIKE '"+ prefix + "%' GROUP BY master_id ORDER BY create_at DESC";
     // get all master prefix that has status 0 or 1
-    let sql_1 = "SELECT * FROM aarx_master WHERE status = 1 ORDER BY created_at DESC";
-    let sql_2 = "SELECT NE_Name,count(*) AS pon_count FROM aarx_status WHERE status = 1 AND NE_Name LIKE '"+ prefix + "%' GROUP BY NE_Name";
+    let sql_1 = "SELECT * FROM neweg_master WHERE status = 1 ORDER BY created_at DESC";
+    let sql_2 = "SELECT NE_Name,count(*) AS pon_count FROM neweg_status WHERE status = 1 AND NE_Name LIKE '"+ prefix + "%' GROUP BY NE_Name";
     //console.log(sql);
 
     let master_ids =  new Promise(function(resolve, reject) {
@@ -110,7 +110,7 @@ function countPONByMasterID(master_id, prefix) {
 }
 function getTXONUCount(data) {
     return new Promise(function(resolve, reject) {
-        let sql = "SELECT DATE_FORMAT(create_at, '%Y-%m-%d') AS dates FROM aarx_status WHERE NE_Name LIKE '"
+        let sql = "SELECT DATE_FORMAT(create_at, '%Y-%m-%d') AS dates FROM neweg_status WHERE NE_Name LIKE '"
             + data.prefix + 
             "%' GROUP BY DATE_FORMAT(create_at, '%y-%m-%d') ORDER BY YEAR(create_at) DESC, MONTH(create_at) DESC, DAYOFMONTH(create_at) DESC";
         db_conn.query(sql, function (err, rows, fields) {
@@ -149,7 +149,7 @@ function getTXONUCount(data) {
 }
 function get_TX_NC_ONU_data(data) {
     return new Promise(function(resolve, reject) {
-        let sql = "SELECT DATE_FORMAT(create_at, '%Y-%m-%d') AS dates FROM aarx_status WHERE NE_Name LIKE '"
+        let sql = "SELECT DATE_FORMAT(create_at, '%Y-%m-%d') AS dates FROM neweg_status WHERE NE_Name LIKE '"
             + data.prefix + 
             "%' GROUP BY DATE_FORMAT(create_at, '%y-%m-%d') ORDER BY YEAR(create_at) DESC, MONTH(create_at) DESC, DAYOFMONTH(create_at) DESC";
         db_conn.query(sql, function (err, rows, fields) {
@@ -169,7 +169,7 @@ function get_TX_NC_ONU_data(data) {
 }
 function getRXONUCount(data) {
     return new Promise(function(resolve, reject) {
-        let sql_0 = "SELECT DATE_FORMAT(create_at, '%Y-%m-%d') AS dates FROM aarx_status WHERE NE_Name LIKE '"
+        let sql_0 = "SELECT DATE_FORMAT(create_at, '%Y-%m-%d') AS dates FROM neweg_status WHERE NE_Name LIKE '"
             + data.prefix.trim() + 
             "%' GROUP BY DATE_FORMAT(create_at, '%y-%m-%d') ORDER BY YEAR(create_at) DESC, MONTH(create_at) DESC, DAYOFMONTH(create_at) DESC";
         //console.log(sql_0)
@@ -178,7 +178,7 @@ function getRXONUCount(data) {
             //console.log(rows[0]);
             let curr_date = rows[0].dates;
             // get all master id that use by those prefix
-            let sql_1 = "SELECT * FROM aarx_status WHERE NE_Name LIKE '"+ data.prefix + "%' AND status = 1";
+            let sql_1 = "SELECT * FROM neweg_status WHERE NE_Name LIKE '"+ data.prefix + "%' AND status = 1";
             // get all master id that use by those prefix
             let sql_2 = "SELECT * FROM import_data WHERE start_at LIKE '"+ curr_date + "%' AND NE_Name LIKE '"+ data.prefix + "%'";
             //console.log(sql);
@@ -200,7 +200,7 @@ function getRXONUCount(data) {
                 let pon_data = res[0];
                 let onu_data = res[1];
                 let NRSSP = '';
-                let AARX_Power = 0;
+                let neweg_Power = 0;
                 let good = bad = 0;
                 let onu_count = {
                     good : 0,
@@ -211,15 +211,15 @@ function getRXONUCount(data) {
                 onu_data.forEach((onu) => {
                     if(onu.Received_Optical_Power != '--') {
                         NRSSP = onu.NE_Name + '-' + onu.Rack + '-' + onu.Shelf + '-' + onu.Slot + '-' + onu.Port;
-                        AARX_Power = pon_data.find((pon_item) => {
+                        neweg_Power = pon_data.find((pon_item) => {
                             return pon_item.NRSSP == NRSSP;
                         })
-                        if(AARX_Power.aarx != 0) {
-                            //console.log("NRSSP = " + NRSSP + " Get AARX = " + AARX_Power.aarx + " VS ONU_RX = " + onu.Received_Optical_Power);
-                            //console.log(' = ' + (onu.Received_Optical_Power - AARX_Power.aarx));
-                            if((onu.Received_Optical_Power - AARX_Power.aarx) < (-2)) {
+                        if(neweg_Power.neweg != 0) {
+                            //console.log("NRSSP = " + NRSSP + " Get neweg = " + neweg_Power.neweg + " VS ONU_RX = " + onu.Received_Optical_Power);
+                            //console.log(' = ' + (onu.Received_Optical_Power - neweg_Power.neweg));
+                            if((onu.Received_Optical_Power - neweg_Power.neweg) < (-2)) {
                                 //console.log('This is bad');
-                                //console.log(onu.Name + ' Bad  = ' + (onu.Received_Optical_Power - AARX_Power.aarx));
+                                //console.log(onu.Name + ' Bad  = ' + (onu.Received_Optical_Power - neweg_Power.neweg));
                                 bad++;
                             } else {
                                 //console.log('This is Good');
@@ -244,8 +244,8 @@ function getRXONUCount(data) {
 function _getRXONUData(data) {
     //console.log(data);
     // get all master prefix that has status active == 0 or previous == 1
-    let sql = "SELECT * FROM aarx_master WHERE id = " + data.master_id;
-    let sql_1 = "SELECT * FROM aarx_status WHERE status = 1 AND master_id = "+ data.master_id + " AND NE_Name LIKE '"+ data.prefix + "%'";
+    let sql = "SELECT * FROM neweg_master WHERE id = " + data.master_id;
+    let sql_1 = "SELECT * FROM neweg_status WHERE status = 1 AND master_id = "+ data.master_id + " AND NE_Name LIKE '"+ data.prefix + "%'";
     // get all master id that use by those prefix
     let sql_2 = "SELECT * FROM import_data WHERE master_id = "+ data.master_id + " AND NE_Name LIKE '"+ data.prefix + "%'";
     
@@ -281,8 +281,8 @@ function _getRXONUData(data) {
             onu_data.forEach((onu) => {
                 NRSSP = onu.NE_Name + '-' + onu.Rack + '-' + onu.Shelf + '-' + onu.Slot + '-' + onu.Port;
                 if(NRSSP == pon.NRSSP) {
-                    //console.log("NRSSP = " + NRSSP + " Get AARX = " + AARX_Power.aarx + " VS ONU_RX = " + onu.Received_Optical_Power);
-                    if((onu.Received_Optical_Power - pon.aarx) < (-2)) {
+                    //console.log("NRSSP = " + NRSSP + " Get neweg = " + neweg_Power.neweg + " VS ONU_RX = " + onu.Received_Optical_Power);
+                    if((onu.Received_Optical_Power - pon.neweg) < (-2)) {
                         //console.log('This is bad');
                         bad++;
                     } else {
@@ -293,7 +293,7 @@ function _getRXONUData(data) {
             })
             onu_count.push( { 
                 pon_name : pon.NRSSP,
-                pon_aarx : pon.aarx,
+                pon_neweg : pon.neweg,
                 good: good,
                 bad: bad
             });
@@ -304,7 +304,7 @@ function _getRXONUData(data) {
 }
 function get_RX_ONU_data(data) {
     return new Promise(function(resolve, reject) {
-        let sql_0 = "SELECT DATE_FORMAT(create_at, '%Y-%m-%d') AS dates FROM aarx_status WHERE NE_Name LIKE '"
+        let sql_0 = "SELECT DATE_FORMAT(create_at, '%Y-%m-%d') AS dates FROM neweg_status WHERE NE_Name LIKE '"
             + data.prefix + 
             "%' GROUP BY DATE_FORMAT(create_at, '%y-%m-%d') ORDER BY YEAR(create_at) DESC, MONTH(create_at) DESC, DAYOFMONTH(create_at) DESC";
         db_conn.query(sql_0, function (err, rows, fields) {
@@ -312,7 +312,7 @@ function get_RX_ONU_data(data) {
             //console.log(rows[0]);
             let curr_date = rows[0].dates;
             // get all master id that use by those prefix
-            let sql_1 = "SELECT * FROM aarx_status WHERE NE_Name LIKE '"+ data.prefix + "%' AND status = 1";
+            let sql_1 = "SELECT * FROM neweg_status WHERE NE_Name LIKE '"+ data.prefix + "%' AND status = 1";
             // get all master id that use by those prefix
             let sql_2 = "SELECT * FROM import_data WHERE start_at LIKE '"+ curr_date + "%' AND NE_Name LIKE '"+ data.prefix + "%'";
             //console.log(sql_2);
@@ -349,8 +349,8 @@ function get_RX_ONU_data(data) {
                         if(onu.Received_Optical_Power != '--') {
                             NRSSP = onu.NE_Name + '-' + onu.Rack + '-' + onu.Shelf + '-' + onu.Slot + '-' + onu.Port;
                             if(NRSSP == pon.NRSSP) {
-                                //console.log("NRSSP = " + NRSSP + " Get AARX = " + AARX_Power.aarx + " VS ONU_RX = " + onu.Received_Optical_Power);
-                                if((onu.Received_Optical_Power - pon.aarx) < (-2)) {
+                                //console.log("NRSSP = " + NRSSP + " Get neweg = " + neweg_Power.neweg + " VS ONU_RX = " + onu.Received_Optical_Power);
+                                if((onu.Received_Optical_Power - pon.neweg) < (-2)) {
                                     //console.log('This is bad');
                                     bad++;
                                 } else {
@@ -369,7 +369,7 @@ function get_RX_ONU_data(data) {
                     })
                     onu_count.push( { 
                         pon_name : pon.NRSSP,
-                        pon_aarx : pon.aarx,
+                        pon_neweg : pon.neweg,
                         good: good,
                         bad: bad,
                         offline: offline,
@@ -438,8 +438,8 @@ function get_PON_ONU_RX_data(data) {
 function _getNCONUData(data) {
 //console.log(data);
     // get all master prefix that has status active == 0 or previous == 1
-    let sql = "SELECT * FROM aarx_master WHERE id = " + data.master_id;
-    let sql_1 = "SELECT * FROM aarx_status WHERE status = 1 AND master_id = "+ data.master_id + " AND NE_Name LIKE '"+ data.prefix + "%'";
+    let sql = "SELECT * FROM neweg_master WHERE id = " + data.master_id;
+    let sql_1 = "SELECT * FROM neweg_status WHERE status = 1 AND master_id = "+ data.master_id + " AND NE_Name LIKE '"+ data.prefix + "%'";
     // get all master id that use by those prefix
     let sql_2 = "SELECT * FROM import_data WHERE master_id = "+ data.master_id + " AND NE_Name LIKE '"+ data.prefix + "%'";
     
@@ -473,15 +473,15 @@ function _getNCONUData(data) {
             onu_data.forEach((onu) => {
                 NRSSP = onu.NE_Name + '-' + onu.Rack + '-' + onu.Shelf + '-' + onu.Slot + '-' + onu.Port;
                 if(NRSSP == pon.NRSSP) {
-                    //console.log("NRSSP = " + NRSSP + " Get AARX = " + AARX_Power.aarx + " VS ONU_RX = " + onu.Received_Optical_Power);
-                    if((onu.Received_Optical_Power - pon.aarx) > (2)) {
+                    //console.log("NRSSP = " + NRSSP + " Get neweg = " + neweg_Power.neweg + " VS ONU_RX = " + onu.Received_Optical_Power);
+                    if((onu.Received_Optical_Power - pon.neweg) > (2)) {
                         //console.log('This is over range onu');
                         let _onu_data = {
                             onu_id: onu.ONU_ID,
                             NRSSP: pon.NRSSP,
                             name: onu.Name,
                             rx: onu.Received_Optical_Power,
-                            aarx : pon.aarx
+                            neweg : pon.neweg
                         };
                         onu_res_data.push(_onu_data);
                     }
@@ -494,7 +494,7 @@ function _getNCONUData(data) {
 }
 function get_NC_ONU_data(data) {
     return new Promise(function(resolve, reject) {
-        let sql_0 = "SELECT DATE_FORMAT(create_at, '%Y-%m-%d') AS dates FROM aarx_status WHERE NE_Name LIKE '"
+        let sql_0 = "SELECT DATE_FORMAT(create_at, '%Y-%m-%d') AS dates FROM neweg_status WHERE NE_Name LIKE '"
             + data.prefix + 
             "%' GROUP BY DATE_FORMAT(create_at, '%y-%m-%d') ORDER BY YEAR(create_at) DESC, MONTH(create_at) DESC, DAYOFMONTH(create_at) DESC";
         db_conn.query(sql_0, function (err, rows, fields) {
@@ -502,7 +502,7 @@ function get_NC_ONU_data(data) {
             //console.log(rows[0]);
             let curr_date = rows[0].dates;
             // get all master id that use by those prefix
-            let sql_1 = "SELECT * FROM aarx_status WHERE NE_Name LIKE '"+ data.prefix + "%' AND status = 1";
+            let sql_1 = "SELECT * FROM neweg_status WHERE NE_Name LIKE '"+ data.prefix + "%' AND status = 1";
             // get all master id that use by those prefix
             let sql_2 = "SELECT * FROM import_data WHERE start_at LIKE '"+ curr_date + "%' AND NE_Name LIKE '"+ data.prefix + "%'";
             //console.log(sql);
@@ -525,24 +525,24 @@ function get_NC_ONU_data(data) {
                 let onu_data = res[1];
                 let NRSSP = '';
                 let onu_res_data = [];
-                let AARX_Power = null;
+                let neweg_Power = null;
                 //console.log('Get qty for onu = ' + onu_data.length);
                 //console.log('Get qty for pon = ' + pon_data.length);
                 onu_data.forEach((onu) => {
                     NRSSP = onu.NE_Name + '-' + onu.Rack + '-' + onu.Shelf + '-' + onu.Slot + '-' + onu.Port;
-                    AARX_Power = pon_data.find((pon_item) => {
+                    neweg_Power = pon_data.find((pon_item) => {
                         return pon_item.NRSSP == NRSSP;
                     })
-                    if(NRSSP == AARX_Power.NRSSP) {
-                        //console.log("NRSSP = " + NRSSP + " Get AARX = " + AARX_Power.aarx + " VS ONU_RX = " + onu.Received_Optical_Power);
-                        if((onu.Received_Optical_Power - AARX_Power.aarx) < (-2)) {
+                    if(NRSSP == neweg_Power.NRSSP) {
+                        //console.log("NRSSP = " + NRSSP + " Get neweg = " + neweg_Power.neweg + " VS ONU_RX = " + onu.Received_Optical_Power);
+                        if((onu.Received_Optical_Power - neweg_Power.neweg) < (-2)) {
                             //console.log('This is over range onu');
                             onu_res_data.push({
                                 onu_id: onu.ONU_ID,
-                                NRSSP: AARX_Power.NRSSP,
+                                NRSSP: neweg_Power.NRSSP,
                                 name: onu.Name,
                                 rx: onu.Received_Optical_Power,
-                                aarx : AARX_Power.aarx
+                                neweg : neweg_Power.neweg
                             });
                         }
                     }
@@ -554,7 +554,7 @@ function get_NC_ONU_data(data) {
 }
 function getCountNCONUData(data) {
 
-    let sql = "SELECT DATE_FORMAT(create_at, '%Y-%m-%d') AS dates FROM aarx_status WHERE NE_Name LIKE '"+ data.prefix + "%' GROUP BY DATE_FORMAT(create_at, '%y-%m-%d') ORDER BY YEAR(create_at) DESC, MONTH(create_at) DESC, DAYOFMONTH(create_at) DESC";
+    let sql = "SELECT DATE_FORMAT(create_at, '%Y-%m-%d') AS dates FROM neweg_status WHERE NE_Name LIKE '"+ data.prefix + "%' GROUP BY DATE_FORMAT(create_at, '%y-%m-%d') ORDER BY YEAR(create_at) DESC, MONTH(create_at) DESC, DAYOFMONTH(create_at) DESC";
     let data_date = new Promise(function(resolve, reject) {
         db_conn.query(sql, function (err, rows, fields) {
             if (err) throw err;
@@ -567,9 +567,9 @@ function getCountNCONUData(data) {
         let curr_date = dates[0][0].dates;
         let prev_date = dates[0][1].dates;
 
-        let sql_current = "SELECT * FROM aarx_status WHERE create_at like '"+
+        let sql_current = "SELECT * FROM neweg_status WHERE create_at like '"+
         curr_date + "%' AND NE_Name LIKE '"+ data.prefix + "%'";
-        let sql_previous = "SELECT * FROM aarx_status WHERE create_at like '"+
+        let sql_previous = "SELECT * FROM neweg_status WHERE create_at like '"+
         prev_date + "%' AND NE_Name LIKE '"+ data.prefix + "%'";
     // get all master id that use by those prefix
         let sql_2 = "SELECT * FROM import_data WHERE NE_Name LIKE '"+ data.prefix + 
@@ -610,8 +610,8 @@ function getCountNCONUData(data) {
                     NRSSP = onu.NE_Name + '-' + onu.Rack + '-' + onu.Shelf + '-' + onu.Slot + '-' + onu.Port;
                     //console.log("NRSSP = " + NRSSP);
                     if(NRSSP == pon.NRSSP) {
-                        //console.log("NRSSP = " + NRSSP + " Get AARX = " + pon.aarx + " VS ONU_RX = " + onu.Received_Optical_Power);
-                        if((onu.Received_Optical_Power - pon.aarx) > (2)) {
+                        //console.log("NRSSP = " + NRSSP + " Get neweg = " + pon.neweg + " VS ONU_RX = " + onu.Received_Optical_Power);
+                        if((onu.Received_Optical_Power - pon.neweg) > (2)) {
                             //console.log('This is over range onu');
                             curr_count++
                         }
@@ -624,8 +624,8 @@ function getCountNCONUData(data) {
                     NRSSP = onu.NE_Name + '-' + onu.Rack + '-' + onu.Shelf + '-' + onu.Slot + '-' + onu.Port;
                     //console.log("NRSSP = " + NRSSP);
                     if(NRSSP == pon.NRSSP) {
-                        //console.log("NRSSP = " + NRSSP + " Get AARX = " + pon.aarx + " VS ONU_RX = " + onu.Received_Optical_Power);
-                        if((onu.Received_Optical_Power - pon.aarx) > (2)) {
+                        //console.log("NRSSP = " + NRSSP + " Get neweg = " + pon.neweg + " VS ONU_RX = " + onu.Received_Optical_Power);
+                        if((onu.Received_Optical_Power - pon.neweg) > (2)) {
                             //console.log('This is over range onu');
                             prev_count++;
                         }

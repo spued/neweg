@@ -8,7 +8,7 @@ const db = require('../model');
 const logger = require('../lib/logger');
 const { PasswordNoMatch, PasswordHashFailed, DbNoResult, StatusError } = require('../errors');
 const main = require('../controller/controller_main');
-const rx_onu = require('../controller/controller_aarx_onu');
+const rx_onu = require('../controller/controller_neweg_onu');
 const tx_onu = require('../controller/controller_tx_onu');
 
 function hashPassword(pwd) {
@@ -131,7 +131,7 @@ module.exports = (passport) => {
   
     routes.get('/me', isLogged, (req, res) => res.status(httpStatus.OK).send(req.user));
     routes.get('/', isLogged, main.getMainPage);
-    routes.get('/aarx_onu', isLogged, main.getAarxOnuPage);
+    routes.get('/neweg_onu', isLogged, main.getnewegOnuPage);
     routes.get('/tx_onu', isLogged, main.getTxOnuPage);
     routes.get('/logout', isLogged, main.getLogoutPage);
     routes.get('/login', isLogged, main.getLoginPage);

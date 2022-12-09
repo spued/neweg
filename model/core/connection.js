@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const logger = require('../../lib/logger');
 
-const dbName = 'aarx_db';
+const dbName = 'neweg_db';
 if (!process.env.MONGODB_ENDPOINT) 
   logger.error('invalid mongodb conf');
 

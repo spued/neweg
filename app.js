@@ -58,7 +58,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: { secure: false },
   store: MongoStore.create({
-    mongoUrl: 'mongodb://'+ process.env.MONGODB_ENDPOINT +'/aarx_db',
+    mongoUrl: 'mongodb://'+ process.env.MONGODB_ENDPOINT +'/neweg_db',
     mongoOptions : { useUnifiedTopology: true },
     ttl: 14 * 24 * 60 * 60
   })
