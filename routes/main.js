@@ -8,8 +8,7 @@ const db = require('../model');
 const logger = require('../lib/logger');
 const { PasswordNoMatch, PasswordHashFailed, DbNoResult, StatusError } = require('../errors');
 const main = require('../controller/controller_main');
-const rx_onu = require('../controller/controller_neweg_onu');
-const tx_onu = require('../controller/controller_tx_onu');
+const deviceman = require('../controller/controller_deviceman');
 
 function hashPassword(pwd) {
   return new Promise((res, rej) => bcrypt.hash(pwd, bcrypt.genSaltSync(), (err, hash) => {
@@ -61,6 +60,7 @@ module.exports = (passport) => {
         let user = null;
         try {
           user = await db.getUserFromField('username', username);
+          
         } catch (e) {
           if (e instanceof DbNoResult) {
             done(null, false, { error: 'Incorrect username.' });
@@ -106,7 +106,7 @@ module.exports = (passport) => {
   
     // Login using passport middleware
     routes.post('/login', validating(authenSchema),
-      passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }),
+      passport.authenticate('local', { failureRedirect: '/login_failed', failureMessage: true }),
       main.post_login_user);
   
     // Simply logs out using passport middleware
@@ -129,37 +129,26 @@ module.exports = (passport) => {
       }
     });
   
-    routes.get('/me', isLogged, (req, res) => res.status(httpStatus.OK).send(req.user));
-    routes.get('/', isLogged, main.getMainPage);
-    routes.get('/neweg_onu', isLogged, main.getnewegOnuPage);
-    routes.get('/tx_onu', isLogged, main.getTxOnuPage);
+    routes.get('/', isLogged, main.getDashboardPage);
     routes.get('/logout', isLogged, main.getLogoutPage);
     routes.get('/login', isLogged, main.getLoginPage);
+    routes.get('/login_failed', main.getLoginFailedPage);
     routes.get('/register_request', main.getRegisterPage);
     routes.get('/user_man', isLogged, main.getUserMan);
     routes.get('/user_setting', isLogged, main.getUserSetting);
 
+    routes.get('/dashboard', isLogged, main.getDashboardPage);
+    routes.get('/deviceman', isLogged, deviceman.getDeviceManPage);
+
     routes.post('/logout', isLogged, main.post_logout_user);
-    routes.post('/list_ne', main.post_list_ne);
     routes.post('/list_user', main.post_list_users);
     routes.post('/list_user_sessions', main.post_list_user_sessions);
     routes.post('/list_user_logs', main.post_list_user_logs);
     routes.post('/user_save', main.post_save_user);
     routes.post('/user_delete', main.post_delete_user);
     routes.post('/user_password', main.post_password_user);
-    
-    routes.post('/list_pon', isLogged, rx_onu.post_rx_province);
-    routes.post('/list_masters', isLogged, rx_onu.post_masters_info);
-    routes.post('/list_master_id', isLogged, rx_onu.post_list_master_id);
-    routes.post('/count_pon', isLogged, rx_onu.post_count_pon);
-    routes.post('/rx_count_onu', isLogged, rx_onu.post_rx_onu_count);
-    routes.post('/rx_count_pon', isLogged, rx_onu.post_rx_pon_count);
-    routes.post('/rx_pon_onu', isLogged, rx_onu.post_pon_onu);
-    routes.post('/list_nc_onu', isLogged, rx_onu.post_list_nc_onu);
-    routes.post('/list_nc_history_onu', isLogged, rx_onu.post_list_nc_history);
 
-    routes.post('/tx_count_onu', isLogged, tx_onu.post_tx_onu_count);
-    routes.post('/tx_get_nc_onu', isLogged, tx_onu.post_tx_nc_onu);
+    routes.post('/search_device', deviceman.post_search_device);
 
     return routes;
 };

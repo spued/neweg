@@ -74,6 +74,5 @@ module.exports = {
   list_user,
   save_user,
   delete_user,
-
   pumpLog
 };

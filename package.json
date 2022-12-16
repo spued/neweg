@@ -13,6 +13,8 @@
   "author": "Sunya J.",
   "license": "ISC",
   "dependencies": {
+    "accepts": "^1.3.8",
+    "axios": "^1.2.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "boostrap": "^2.0.0",
@@ -42,6 +44,7 @@
     "jquery": "^3.6.1",
     "jquery-browserify": "^1.8.1",
     "mocha": "^7.1.0",
+    "moment": "^2.29.4",
     "mongoose": "^5.9.13",
     "morgan": "^1.9.1",
     "mysql": "^2.18.1",

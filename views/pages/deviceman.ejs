@@ -1,0 +1,86 @@
+<%- include('./header'); %>
+
+    <div class="card mb-5">
+        <%- include('./topmenu'); %>
+    </div>
+    
+        <div class="card">
+            <div class="card-header">
+                <h3>Device Management</h3>
+                <div class="main_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="search_keyword" placeholder="ใส่หมายเลขวงจรเพื่อค้นหาอุปกรณ์"/>
+                        <div class="input-group-append">
+                            <button class="form-control btn btn-success btn-search" id="search_button">ค้นหา</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <table class="table">
+                            <tbody>
+                              <tr>
+                                <th>เลขหมาย</th>
+                                <td><div class="information" id="circuit_number">-</div></td>
+                                <th>Model</th>
+                                <td><div class="information" id="model">-</div></td>
+                              </tr>
+                              <tr>
+                                <th>S/N</th>
+                                <td><div class="information" id="sn">-</div></td>
+                                <th>อัพเดทล่าสุด</th>
+                                <td><div class="information" id="last_update">-</div></td>
+                              </tr>
+                              <tr>
+                                <th>เฟิร์มแวร์</th>
+                                <td><div class="information" id="software_version">-</div></td>
+                                <th>WAN IP</th>
+                                <td><div class="information" id="wan_ip">-</div></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                    </div>
+                    <div class="col-xl-12">
+                        <canvas id="cpe_canvas" width=800 height="300" style="border:1px solid #000000;"></canvas>
+                    </div>
+                    <div class="col-xl-12">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                              <a class="nav-link active" aria-current="page" href="#">LAN</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="#">WAN</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="#">LAN</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Wireless</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Voice</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                            </li>
+                          </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+
+<script type="text/javascript" src="/pub/js/bundle.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.12.1/datatables.min.js"></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+        integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    ></script>
+<script type="text/javascript" src="/pub/js/common.js"></script>
+<script type="text/javascript" src="/pub/js/deviceman.js" defer></script>
+<%- include('./footer'); %>

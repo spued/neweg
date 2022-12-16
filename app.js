@@ -46,7 +46,7 @@ app.use('/pub', express.static(__dirname + '/pub'))
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
 app.use('/js', express.static(path.join(__dirname, 'node_modules/popper.js/dist/umd')))
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
-
+//app.use('/adminlte', express.static(path.join(__dirname,'node_modules/admin-lte')))
 app.use(cookieParser());
 
 app.use(bodyparser.json());
@@ -75,11 +75,10 @@ app.use(morgan('dev', {
   stream: logger.stream,
 }));
 
-//app.use(require('./routes/user')(passport));
 app.use(require('./routes/main')(passport));
 
 app.use(favicon(__dirname + '/pub/img/favicon.ico'));
 
-app.listen(8081,() => logger.info('Listening on ' + process.env.APP_PORT));
+app.listen(process.env.APP_PORT,() => logger.info('Listening on ' + process.env.APP_PORT));
 
 module.exports = app;

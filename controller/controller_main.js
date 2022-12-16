@@ -19,6 +19,16 @@ const getLoginPage = (req,res) => {
     };
     res.render('pages/login', message);
 }
+
+const getLoginFailedPage = (req,res) => {
+  console.log("Controller: Main: Get login failed page");
+  let message = {
+    failureMessage : false,
+    msg: "Login failed."
+  };
+  res.render('pages/login_failed', message);
+}
+
 const getLogoutPage = async (req,res) => {
   console.log("Controller: Main: Get logout page");
   await req.logout();
@@ -34,21 +44,14 @@ const getRegisterPage = (req,res) => {
     console.log("Controller: Main: Get register page");
     res.render('pages/register');
 }
-const getnewegOnuPage = (req,res) => {
-  console.log("Controller: Main: Get neweg ONU page");
+
+const getDashboardPage = (req,res) => {
+  console.log("Controller: Main: Get Dashboard page");
   /* db.getOverAllNEData().then(function(rows) {
       // now you have your rows, you can see if there are <20 of them
         //console.log(rows);
   }).catch((err) => setImmediate(() => { throw err; })); */
-  res.render('pages/neweg_onu', req.user);
-}
-const getTxOnuPage = (req,res) => {
-  console.log("Controller: Main: Get TX ONU page");
-  /* db.getOverAllNEData().then(function(rows) {
-      // now you have your rows, you can see if there are <20 of them
-        //console.log(rows);
-  }).catch((err) => setImmediate(() => { throw err; })); */
-  res.render('pages/tx_onu', req.user);
+  res.render('pages/dashboard', req.user);
 }
 const getUserMan = (req,res) => {
   //console.log(req.user);
@@ -72,7 +75,7 @@ const post_login_user = async (req, res, next) => {
       username: req.user.username,
       action: 'Logged in'
     });
-    return res.render('pages/main_page', req.user);
+    return res.render('pages/dashboard', req.user);
   });
 }
 const post_logout_user = async (req, res) => {
@@ -318,11 +321,11 @@ const post_list_ne = async (req, res) => {
 }
 module.exports = {
     getLoginPage,
+    getLoginFailedPage,
     getLogoutPage,
     getMainPage,
     getRegisterPage,
-    getnewegOnuPage,
-    getTxOnuPage,
+    getDashboardPage,
     getUserMan,
     getUserSetting,
 
