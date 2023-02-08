@@ -1,0 +1,50 @@
+<div class="config_panel">
+    <div class="card">
+        <div class="card-header">
+            <h3>DDNS configurations</h3>
+        </div>
+        <div class="card-body">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Enable</span>
+                <select id="ddns_enable" type="text" class="form-control" name="ddns_enable" aria-label="DDNS Enable" aria-describedby="basic-addon1">
+                    <option value="false">No</option>
+                    <option value="true">Yes</option>
+                </select>
+            </div>    
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">Provider</span>
+                <select id="ddns_provider" type="text" class="form-control" name="ddns_provider" aria-label="DDNS Provider" aria-describedby="basic-addon2">
+                    <option value="dipc">DIPC</option>
+                    <option value="dyndns">DynDNS</option>
+                    <option value="DtDNS">DtDNS</option>
+                    <option value="No-IP">No-IP</option>
+                </select>
+            </div>  
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">Hostname</span>
+                <input id="ddns_hostname" type="text" class="form-control" name="ddns_hostname" placeholder="-" aria-label="Hostname" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon4">Username</span>
+                <input id="ddns_username" type="text" class="form-control" name="ddns_username" placeholder="-" aria-label="Username" aria-describedby="basic-addon4">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon5">Password</span>
+                <input id="ddns_password" type="text" class="form-control" name="ddns_password" placeholder="********" aria-label="Password" aria-describedby="basic-addon5">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon6">URL</span>
+                <input id="ddns_server" type="text" class="form-control" name="ddns_server" placeholder="-" aria-label="Server" aria-describedby="basic-addon6">
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-warning btn-reboot" id="reboot_button">Reboot</button>
+                
+                <button class="btn btn-info btn-refresh" id="refresh_button">Refresh</button>
+                <button class="btn btn-success btn-save" id="save_button">Save</button>
+            </div>
+            
+        </div>
+    </div>
+</div>

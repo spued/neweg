@@ -1,0 +1,55 @@
+<div class="config_panel">
+    <div class="card">
+        <div class="card-header">
+            <h3>VoIP configurations</h3>
+        </div>
+        <div class="card-body">
+            <div class="card mb-3" id="line_1">
+                <div class="card-header">
+                    <h5>Line 1</h5>
+                    <h5 >Status : <span class="text-success" id="line_1_status">-</span></h5>
+                </div>
+                <div class="card-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Number</span>
+                        <input id="line_1_number" type="text" class="form-control" name="line_1_number" placeholder="default" aria-label="Line 1 number" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">Password</span>
+                        <input id="line_1_password" type="text" class="form-control" name="line_1_password" placeholder="********" aria-label="Line 1 password" aria-describedby="basic-addon2">
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3" id="line_2">
+                <div class="card-header">
+                    <h5>Line 2</h5>
+                    <h5 >Status : <span class="text-success" id="line_2_status">-</span></h5>
+                </div>
+                <div class="card-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon3">Number</span>
+                        <input id="line_2_number" type="text" class="form-control" name="line_2_number" placeholder="default" aria-label="Line 2 number" aria-describedby="basic-addon3">
+                    </div>
+                
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon4">Password</span>
+                        <input id="line_2_password" type="text" class="form-control" name="line_2_password" placeholder="********" aria-label="Line 2 password" aria-describedby="basic-addon4">
+                    </div>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon5">SIP Server IP</span>
+                <input id="proxy_server_ip" type="text" class="form-control" name="proxy_server_ip" placeholder="default" aria-label="proxy server" aria-describedby="basic-addon5">
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-warning btn-reboot" id="reboot_button">Reboot</button>
+                
+                <button class="btn btn-info btn-refresh" id="refresh_button">Refresh</button>
+                <button class="btn btn-success btn-save" id="save_button">Save</button>
+            </div>
+            
+        </div>
+    </div>
+</div>

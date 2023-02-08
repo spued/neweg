@@ -1,0 +1,72 @@
+/* change border radius for the tab , apply corners on top*/
+
+canvas {
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 5px;
+    display: block;
+    border:1px solid #ffffff;
+
+}
+
+
+.nav-tabs > li > a {
+    border-radius: 4px 4px 0 0 ;
+}
+
+
+.nav-link {
+    font-size: 1.6em;
+}
+.tab-content {
+    
+    color : white;
+    background-color:white;
+    padding : 5px 15px;
+}
+
+
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 3px solid #ccc;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+  }
+
+input[type=text]:focus {
+    border: 3px solid #555;
+}
+
+.config_panel {
+    color: rgb(4, 32, 106);
+    background-color: white;
+}
+table.dataTable {
+    font-size: 1.0em;
+}
+table.dataTable tr td {
+    font-size: 1.2em;
+}
+
+table tr td {
+    font-size: 1.6em;
+}
+table tr th {
+    font-size: 1.2em;
+    color: rgb(4, 32, 106);
+}
+
+.input-group-text {
+    background-color: rgb(233, 196, 228);
+}
+.horizontal-btn-line {
+    display: flex; 
+    justify-content: space-between;
+}
+
+.user-note {
+    width: 90%;
+}

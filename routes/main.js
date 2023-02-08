@@ -149,6 +149,22 @@ module.exports = (passport) => {
     routes.post('/user_password', main.post_password_user);
 
     routes.post('/search_device', deviceman.post_search_device);
+    routes.post('/device_refresh_params', deviceman.post_refresh_params);
+    routes.post('/device_get_params', deviceman.post_query_params);
 
+    routes.post('/user_note_save', deviceman.post_user_note_save);
+    routes.post('/user_note_load', deviceman.post_user_note_load);
+    routes.post('/system_save', deviceman.post_system_save);
+    routes.post('/lan_save', deviceman.post_lan_save);
+    routes.post('/wlan_save', deviceman.post_wlan_save);
+    routes.post('/wlan_neighbor', deviceman.post_wlan_neighbor);
+    routes.post('/voip_save', deviceman.post_voip_save);
+    routes.post('/ddns_save', deviceman.post_ddns_save);
+    routes.post('/port_forward_save', deviceman.post_port_forward_save);
+    routes.post('/port_forward_add', deviceman.post_port_forward_add);
+    routes.post('/port_forward_delete', deviceman.post_port_forward_delete);
+    routes.post('/device_reboot', deviceman.post_device_reboot);
+    routes.post('/device_history_save',deviceman.post_device_history_save);
+    routes.post('/device_history_load',deviceman.post_device_history_load);
     return routes;
 };

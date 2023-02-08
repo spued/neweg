@@ -58,6 +58,10 @@ const userSchema = new mongoose.Schema({
   logo_url: {
     type: String,
     default: "-",
+  },
+  history_data: {
+    type: String,
+    default: "[]",
   }
 });
 const logSchema = new mongoose.Schema({

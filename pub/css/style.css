@@ -1,10 +1,20 @@
 
 body {
-    font-family: 'arial,freesiaUPC,san-serif';
+    font-family: 'Sarabun',san-serif;
     font-size: 62.5%;
     margin: 5px;
+    padding : 10px ;
+    background-color:rgb(141, 141, 141);
+}
+
+a .nav-link{
+    font-family: 'Sarabun',san-serif;
+    font-size: 88.5%;
+    margin: 5px;
+    padding : 10px ;
     background-color:rgb(80, 146, 146);
 }
+
 label {
     color: #1109ab;
     text-shadow: 0 1px 0 #fff;
@@ -13,7 +23,13 @@ label {
 }
 
 .card-header {
-    background-color: #ffffff;
+    background-color: #a1e8bd;
+}
+.card-body {
+    background-color: white;
+}
+.card-footer {
+    background-color: #a1e8bd;
 }
 table {
     color: #464646;
@@ -35,7 +51,8 @@ img.menu_logo {
     margin: auto;
 }
 .center_text {
-    text-align: center 
+    text-align: center;
+    background-color: #a1e3e8;
 }
 .center_form {
     display: block;

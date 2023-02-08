@@ -1,79 +1,155 @@
 <%- include('./header'); %>
 
-    <div class="card mb-5">
-        <%- include('./topmenu'); %>
+<div class="card mb-5">
+    <%- include('./topmenu'); %>
+</div>
+<div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-xl-12">
+          <h3>Device Management</h3>
+        </div>
+        <div class="col-xl-12">
+          
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+          
+        </div>
+        <div class="col-xl-12">
+          <div class="input-group user-note">
+            <textarea class="form-control" id="user_note"cols="80" rows="3">-</textarea>
+            <span>
+              <button class="btn btn-warning btn-save-note" id="btn_save_note">Save note</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-xl-12">
+          <div class="main_search">
+              <div class="input-group">
+                  <input type="text" class="form-control" id="search_keyword" placeholder="Fill the number for searching."/>
+                  <div class="input-group-addon">
+                      <button class="form-control btn btn-success btn-search" id="search_button" aria-describedby="search_keyword">Search</button>
+                  </div>
+              </div>
+          </div>
+          <input type="hidden" id="current_device_id" name="current_device_id" value="-">
+          <input type="hidden" id="product_class" name="product_class" value="-">
+        </div>
+        
+      </div>
     </div>
-    
-        <div class="card">
-            <div class="card-header">
-                <h3>Device Management</h3>
-                <div class="main_search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="search_keyword" placeholder="ใส่หมายเลขวงจรเพื่อค้นหาอุปกรณ์"/>
-                        <div class="input-group-append">
-                            <button class="form-control btn btn-success btn-search" id="search_button">ค้นหา</button>
-                        </div>
-                    </div>
-                </div>
+    <div class="card-body">
+        <div class="row">
+          <div class="col-xl-12">
+            <table class="table" id="table_device_info">
+              <tbody>
+                <tr>
+                  <th>Number</th>
+                  <td><div class="information" id="circuit_number">-</div></td>
+                  <th>Model</th>
+                  <td><div class="information" id="model">-</div></td>
+                </tr>
+                <tr>
+                  <th>S/N</th>
+                  <td><div class="information" id="sn">-</div></td>
+                  <th>Last update</th>
+                  <td><div class="information" id="last_update">-</div></td>
+                </tr>
+                <tr>
+                  <th>S/W Version</th>
+                  <td><div class="information" id="software_version">-</div></td>
+                  <th>WAN IP/MAC</th>
+                  <td><div class="information" id="wan_ip">-</div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+            <div class="col-xl-12">
+              <div class="device-canvas" id="device_canvas">
+                <canvas id="cpe_canvas" width=800 height="300"></canvas>
+              </div>
+
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <table class="table">
-                            <tbody>
-                              <tr>
-                                <th>เลขหมาย</th>
-                                <td><div class="information" id="circuit_number">-</div></td>
-                                <th>Model</th>
-                                <td><div class="information" id="model">-</div></td>
-                              </tr>
-                              <tr>
-                                <th>S/N</th>
-                                <td><div class="information" id="sn">-</div></td>
-                                <th>อัพเดทล่าสุด</th>
-                                <td><div class="information" id="last_update">-</div></td>
-                              </tr>
-                              <tr>
-                                <th>เฟิร์มแวร์</th>
-                                <td><div class="information" id="software_version">-</div></td>
-                                <th>WAN IP</th>
-                                <td><div class="information" id="wan_ip">-</div></td>
-                              </tr>
-                            </tbody>
-                          </table>
+            <div class="col-xl-12">  
+                <div id="device_config_tab_tab">	
+                  <ul  class="nav nav-tabs">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="device_system_link" aria-current="page" href="#device_system_tab">System</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="device_wan_link" href="#wan_config_tab">WAN</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="device_lan_link" href="#lan_config_tab">LAN</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="device_wlan_link" href="#wlan_config_tab">Wireless</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="device_voip_link" href="#voip_config_tab">VoIP</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="device_ddns_link" href="#ddns_config_tab">DDNS</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="device_port_forward_link" href="#port_forward_config_tab">Port forward</a>
+                      </li>
+                      <!--li class="nav-item">
+                        <a class="nav-link" href="#files_config_tab">Config files</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#upgrade_config_tab">Upgrade</a>
+                      </li-->
+                  </ul>
+                  <div class="tab-content clearfix">
+                    <div class="tab-pane fade show active" id="device_system_tab" role="tabpanel">
+                      <%- include('./deviceman_system_tab'); %>
                     </div>
-                    <div class="col-xl-12">
-                        <canvas id="cpe_canvas" width=800 height="300" style="border:1px solid #000000;"></canvas>
+                    <div class="tab-pane fade" id="wan_config_tab" role="tabpanel">
+                      <%- include('./deviceman_wan_tab'); %>
                     </div>
-                    <div class="col-xl-12">
-                        <ul class="nav nav-tabs">
-                            <li class="nav-item">
-                              <a class="nav-link active" aria-current="page" href="#">LAN</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" href="#">WAN</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" href="#">LAN</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Wireless</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Voice</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                            </li>
-                          </ul>
+                    <div class="tab-pane fade" id="lan_config_tab" role="tabpanel">
+                      <%- include('./deviceman_lan_tab'); %>
                     </div>
+                    <div class="tab-pane fade" id="wlan_config_tab" role="tabpanel">
+                      <%- include('./deviceman_wlan_tab'); %>
+                    </div>
+                    <div class="tab-pane fade" id="voip_config_tab" role="tabpanel">
+                      <%- include('./deviceman_voip_tab'); %>
+                    </div>
+                    <div class="tab-pane fade" id="ddns_config_tab" role="tabpanel">
+                      <%- include('./deviceman_ddns_tab'); %>
+                    </div>
+                    <div class="tab-pane fade" id="port_forward_config_tab" role="tabpanel">
+                      <%- include('./deviceman_port_forward_tab'); %>
+                    </div>
+                    <div class="tab-pane fade" id="files_config_tab" role="tabpanel">
+                      <%- include('./deviceman_files_tab'); %>
+                    </div>
+                    <div class="tab-pane fade" id="upgrade_config_tab" role="tabpanel">
+                      <%- include('./deviceman_upgrade_tab'); %>
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>
-    
-
-
+    </div>
+</div>
+<%- include('../modals/modal_port_forward'); %>
+<%- include('../modals/modal_loading'); %>
 <script type="text/javascript" src="/pub/js/bundle.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/popper.min.js"></script>
+<script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+</script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.12.1/datatables.min.js"></script>
 <script
         src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"

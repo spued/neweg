@@ -1,0 +1,43 @@
+<div class="modal" id="modalPortForward" tabindex="-1" role="dialog" aria-labelledby="modalTitle" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Edit Port forward </h5>
+                <button type="button" class="btn pf_close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/port_forward_save" method="post" id="form_port_forward_edit">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="e_email">External port</label>
+                            <input type="text" class="form-control" id="e_external_port" name="external_port">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="e_email">Internal port</label>
+                            <input type="text" class="form-control" id="e_internal_port" name="internal_port">
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="e_email">To IP</label>
+                            <input type="text" class="form-control" id="e_internal_ip" name="internal_ip">
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="e_select_type">Status</label>
+                            <select class="select form-control" name="type" id="e_select_enable">
+                                <option value="true">Enable</option>
+                                <option value="false">Disable</option>
+                            </select>
+                        </div>
+                        <input type="hidden" id="action_type" name="action_type" value="">
+                        <input type="hidden" id="current_index" name="current_index" value="">
+                    </div>
+                  </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" form="form_port_forward_edit" class="btn btn-success btn-save-port-forward" >Save</button>
+                <button type="button" class="btn btn-warning pf_close" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

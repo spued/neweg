@@ -46,6 +46,7 @@ app.use('/pub', express.static(__dirname + '/pub'))
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
 app.use('/js', express.static(path.join(__dirname, 'node_modules/popper.js/dist/umd')))
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
+app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery-validation/dist')))
 //app.use('/adminlte', express.static(path.join(__dirname,'node_modules/admin-lte')))
 app.use(cookieParser());
 

@@ -1,0 +1,34 @@
+<div class="config_panel">
+    <div class="card">
+        <div class="card-header">
+            <h3>Device configurations</h3>
+        </div>
+        <div class="card-body">
+            <form id="system_config_form">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Uptime</span>
+                    <input id="uptime" type="text" class="form-control" name="uptime" placeholder="default" aria-label="Uptime" aria-describedby="basic-addon1" readonly>
+                </div>      
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">ProvisioningCode</span>
+                    <input id="provisioning_code" type="text" class="form-control" name="provisioning_code" placeholder="default" aria-label="Provisioning Code" aria-describedby="basic-addon2">
+                    <h5 id="code_check" style="color: red;"></h5>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon3">Remote web config</span>
+                    <select class="form-control" id="remote_config_enable" name="remote_config_enable" aria-label="Provisioning Code" aria-describedby="basic-addon2">
+                        <option value="false" selected>No</option>
+                        <option value="true">Yes</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-warning btn-reboot" id="system_reboot_button">Reboot</button>
+                <button class="btn btn-info btn-refresh" id="system_refresh_button">Refresh</button>
+                <button class="btn btn-success btn-save" id="system_save_button">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

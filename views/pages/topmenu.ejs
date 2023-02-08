@@ -1,20 +1,19 @@
 <div class="center_text">
     <div class="row">
         <div class="col-sm-2">
-            <img src="/pub/img/test_logo.png" alt="Logo" class="menu_logo" />
+            <img src="/pub/img/eg_logo.png" alt="Logo" class="menu_logo" />
         </div>
         <div class="col-sm-10">
-        <h3 class="text text-info">New Easy Gateway</h3>
-        <div class="btn-group">
-            <a href="/dashboard" class="btn btn-success">Dashboard</a>
-            <a href="/deviceman" class="btn btn-success">Device</a>
-            <% if(type == 'admin') { %>
-                <a href="/user_man" class="btn btn-warning">User manage</a>
-            <% } %>
-            <a href="/user_setting" class="btn btn-warning"><%= fullname %>'s Setting</a>
-            <button class="btn btn-danger" onclick="do_logout();">Logout</a>
-        </div>  
-    </div>
+            <div class="btn-group">
+                <a href="/dashboard" class="btn btn-success">Dashboard</a>
+                <a href="/deviceman" class="btn btn-success">Devices</a>
+                <% if(type == 'admin') { %>
+                    <a href="/user_man" class="btn btn-warning">Users</a>
+                <% } %>
+                <a href="/user_setting" class="btn btn-warning"><%= fullname %>'s Settings</a>
+                <button class="btn btn-danger" onclick="do_logout();">Logout</a>
+            </div>  
+        </div>
     </div>
 </div>
 <script type="text/javascript">

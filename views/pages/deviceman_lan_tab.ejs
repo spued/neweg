@@ -1,0 +1,74 @@
+<div class="config_panel">
+    <div class="card">
+        <div class="card-header">
+            <h3>LAN configurations</h3>
+        </div>
+        <div class="card-body">  
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="text-info">LAN Hosts list</label>
+                    <table id="table_lan_host_list" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>name</th>
+                                <th>MAC</th>
+                                <th>IP</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">IP address</span>
+                        <input id="lan_ip_address" type="text" class="form-control" name="lan_ip_address" placeholder="default" aria-label="lan_ip_address" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon6">Netmask</span>
+                        <select id="lan_netmask" class="form-control" name="lan_netmask" placeholder="default" aria-label="lan_netmask" aria-describedby="basic-addon6">
+                            <option value="255.0.0.0">255.255.255.0</option>
+                            <option value="255.255.0.0">255.255.255.0</option>
+                            <option value="255.255.255.0">255.255.255.0</option>
+                            <option value="255.255.255.128">255.255.255.128</option>
+                            <option value="255.255.255.92">255.255.255.192</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">DHCP enable</span>
+                        <select id="lan_dhcp_status" class="form-control" name="lan_dhcp_status" placeholder="default" aria-label="lan_dhcp_status" aria-describedby="basic-addon2">
+                            <option value="true">Enabled</option>
+                            <option value="false">Disable</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon3">DHCP Pool start</span>
+                        <input id="lan_dhcp_pool_start" type="text" class="form-control" name="lan_dhcp_pool_start" placeholder="default" aria-label="lan_dhcp_pool_start" aria-describedby="basic-addon3">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon7">DHCP Pool end</span>
+                        <input id="lan_dhcp_pool_end" type="text" class="form-control" name="lan_dhcp_pool_end" placeholder="default" aria-label="lan_dhcp_pool_end" aria-describedby="basic-addon7">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon4">DHCP lease time</span>
+                        <input id="lan_dhcp_lease_time" type="text" class="form-control" name="lan_dhcp_lease_time" placeholder="default" aria-label="lan_dhcp_lease_time" aria-describedby="basic-addon4">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon5">DNS Server</span>
+                        <input id="lan_dns_server" type="text" class="form-control" name="lan_dns_server" placeholder="default" aria-label="lan_dns_server" aria-describedby="basic-addon4">
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <div class="card-footer">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-warning btn-reboot" id="reboot_button">Reboot</button>
+                <button class="btn btn-info btn-refresh" id="refresh_button">Refresh</button>
+                <button class="btn btn-success btn-save" id="save_button">Save</button>
+            </div>
+            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="config_panel">
+    <div class="card">
+        <div class="card-header">
+            <h3>WLAN configurations</h3>
+        </div>
+        <div class="card-body">       
+            <div class="row">
+                
+                <div class="col-md-6">
+                    <label class="text-success">Wireless 2.4Ghz config</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">SSID 2.4G</span>
+                        <input id="wlan_ssid_24" type="text" class="form-control" name="wlan_ssid_24" placeholder="default" aria-label="wlan_ssid_24" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">Key</span>
+                        <input id="wlan_key_24" type="text" class="form-control" name="wlan_key_24" placeholder="default" aria-label="wlan_key_24" aria-describedby="basic-addon2">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon3">Channel</span>
+                        <select id="wlan_channel_24" class="form-control" name="wlan_channel_24" aria-describedby="basic-addon3">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-success">Wireless 5Ghz config</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon4">SSID 5G</span>
+                        <input id="wlan_ssid_5" type="text" class="form-control" name="wlan_ssid_5" placeholder="default" aria-label="wlan_ssid_5" aria-describedby="basic-addon4">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon5">Key</span>
+                        <input id="wlan_key_5" type="text" class="form-control" name="wlan_key_5" placeholder="default" aria-label="wlan_key_5" aria-describedby="basic-addon5">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon6">Channel</span>
+                        <select id="wlan_channel_5" class="form-control" name="wlan_channel_5" aria-describedby="basic-addon6">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-info">2.4Ghz neighbor list</label>
+                    <span>
+                        <button class="btn btn-warning btn-scan-24" id="btn_scan_24">Scan</button>
+                    </span>
+                    <table id="table_wlan_ssid_list_24" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>SSID</th>
+                                <th>Channel</th>
+                                <th>Signal</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-info">5Ghz neighbor list</label>
+                    <span>
+                        <button class="btn btn-warning btn-scan-5" id="btn_scan_5">Scan</button>
+                    </span>
+                    <table id="table_wlan_ssid_list_5" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>SSID</th>
+                                <th>Channel</th>
+                                <th>Signal</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+            </div> 
+        </div>
+        <div class="card-footer">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-warning btn-reboot" id="reboot_button">Reboot</button>
+                
+                <button class="btn btn-info btn-refresh" id="refresh_button">Refresh</button>
+                <button class="btn btn-success btn-save" id="save_button">Save</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
