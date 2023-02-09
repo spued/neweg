@@ -22,7 +22,7 @@ const db = mongoose.connection;
 
 db.on('error', (e) => logger.error(e));
 db.once('open', () => {
-  logger.info('Connected to Database');
+  logger.info('Connected to base Database');
 });
 
 module.exports = { mongoose };

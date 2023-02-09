@@ -11,6 +11,53 @@ const getDeviceManPage = (req, res) => {
     console.log("Controller: Main: Get Device Manager page");
     res.render('pages/deviceman', req.user);
 }
+const post_search_device = (req, res) => {
+    console.log("Controller: Main: Post Device search");
+    resData = {
+        code : 1,
+        msg : 'Error : Default',
+        data : []
+    };
+    //console.log(req.user);
+    const user_right = req.user.right.split(',');
+    //console.log(user_right);
+    if(user_right.length > 0 || req.user.type == 'admin') {
+        const cn_number = user_right.find(prefix =>  req.body.cn.startsWith(prefix));
+        if(cn_number != undefined || req.user.type == 'admin') {
+            const device_url = process.env.ACS_API_DEVICES;
+            const search_query = '{ "VirtualParameters.circuit_number._value" : "/'+ req.body.cn +'/" }'
+            axios.get(device_url, { params: { query:  search_query }}).then((response) => {
+                // handle success
+                //console.log(response.data);
+                let data_t = [];
+
+                for(const element of response.data) {
+                    //console.log(element);
+                    data_t.push(translator.map_attribute(element));
+                }
+                
+                resData.data = response.data;
+                resData.data_t = data_t;
+                resData.code = 0;
+                resData.msg = 'ok';
+                res.json(resData);
+            }).catch((error) => {
+                // handle errors
+                    console.log('Error : ' + error)
+                    res.json(resData);
+            });
+        } else {
+            resData.code = 2;
+            resData.msg = 'user right not permit';
+            res.json(resData);
+        }
+    } else {
+        resData.code = 3;
+        resData.msg = 'user right error';
+        res.json(resData);
+    }
+    
+}
 const post_user_note_save = (req, res) => {
     console.log("Controller: Main: Post user note save");
     resData = {
@@ -67,36 +114,7 @@ const post_device_history_load = async (req, res) => {
     resData.data = _data.history_data;
     res.json(resData);
 }
-const post_search_device = (req, res) => {
-    console.log("Controller: Main: Post Device search");
-    resData = {
-        code : 1,
-        msg : 'Error : Default' 
-    };
-    const device_url = process.env.ACS_API_DEVICES;
-    const search_query = '{ "VirtualParameters.circuit_number._value" : "/'+ req.body.cn +'/" }'
-    axios.get(device_url, { params: { query:  search_query }}).then((response) => {
-        // handle success
-        //console.log(response.data);
-        let data_t = [];
 
-        for(const element of response.data) {
-            //console.log(element);
-            data_t.push(translator.map_attribute(element));
-        }
-        
-        resData.data = response.data;
-        resData.data_t = data_t;
-        resData.code = 0;
-        resData.msg = 'ok';
-        res.json(resData);
-    })
-    .catch((error) => {
-    // handle errors
-        console.log('Error : ' + error)
-        res.json(resData);
-    });
-}
 const post_refresh_params = (req, res) => {
     console.log("Controller: Main: Post Device refresh");
     resData = {

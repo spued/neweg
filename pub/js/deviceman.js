@@ -62,14 +62,13 @@ window.addEventListener('beforeunload', function (e) {
     // Cancel the event
     e.preventDefault();
     // Chrome requires returnValue to be set
-    e.returnValue = 'Good bye';
+    //e.returnValue = 'Good bye';
     if(history_cpe.length > 0) {
         $.post('/device_history_save',{ 
             history_data : JSON.stringify(history_cpe)
-        }, (res) => {
-            //console.log(res);
         });
     }
+    return undefined;
 });
 
 $('.btn-history-cpe').on('click', function(){

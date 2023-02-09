@@ -1,6 +1,7 @@
 const date=require('joi/lib/types/date');
 const { now }=require('mongoose');
 const { mongoose } = require('./connection');
+const logger = require('../../lib/logger');
 const userSchema = new mongoose.Schema({
   uuid: {
     type: String,
@@ -91,8 +92,21 @@ const sessionSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 const Logs = mongoose.model('Logs', logSchema);
 const Sessions = mongoose.model('sessions', sessionSchema);
+// ACS db connect
+const acs_db  = mongoose.createConnection(process.env.ACS_DB_URL + 'genieacs', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true 
+});
+
+acs_db.on('error', (e) => logger.error(e));
+acs_db.once('open', () => {
+  logger.info('Connected to ACS Database');
+  
+});
+const Devices = acs_db.collection('devices');
 module.exports = {
   User,
   Sessions,
-  Logs
+  Logs,
+  Devices
 };

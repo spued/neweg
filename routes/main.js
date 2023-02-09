@@ -9,6 +9,7 @@ const logger = require('../lib/logger');
 const { PasswordNoMatch, PasswordHashFailed, DbNoResult, StatusError } = require('../errors');
 const main = require('../controller/controller_main');
 const deviceman = require('../controller/controller_deviceman');
+const dashboad = require('../controller/controller_dashboard');
 
 function hashPassword(pwd) {
   return new Promise((res, rej) => bcrypt.hash(pwd, bcrypt.genSaltSync(), (err, hash) => {
@@ -166,5 +167,8 @@ module.exports = (passport) => {
     routes.post('/device_reboot', deviceman.post_device_reboot);
     routes.post('/device_history_save',deviceman.post_device_history_save);
     routes.post('/device_history_load',deviceman.post_device_history_load);
+
+    routes.post('/dashboard_prefix', dashboad.post_user_prefix);
+    routes.post('/dashboard_prefix_data', dashboad.post_graph_prefix);
     return routes;
 };
