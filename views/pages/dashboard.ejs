@@ -11,8 +11,41 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-xl-12">
-                        <p>
+                        <div id="prefix">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Select prefix</span>
+                                <select class="form-control" id="select_prefix" name="select_prefix">
+                                    <option value="-1">All</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12">
+                        <div id="chart-wrapper">
                             <canvas id="pie-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-xl-12">
+                        <p>
+                            <table class="table table-bordered" id="tableOnline">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Online
+                                        </th>
+                                        <th>
+                                            Last 24H
+                                        </th>
+                                        <th>
+                                            More than 24H
+                                        </th>
+                                        <th>
+                                            Dead
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </p>
                     </div>
                 </div>

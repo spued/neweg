@@ -104,9 +104,11 @@ acs_db.once('open', () => {
   
 });
 const Devices = acs_db.collection('devices');
+const Tasks = acs_db.collection('tasks');
 module.exports = {
   User,
   Sessions,
   Logs,
-  Devices
+  Devices,
+  Tasks
 };

@@ -1,5 +1,5 @@
 const { DbNoResult } = require('../../errors');
-const { User, Sessions, Logs, Devices } = require('../core/Schemas');
+const { Devices } = require('../core/Schemas');
 const ObjectId = require('mongoose').Types.ObjectId; 
 
 async function listDevices(data) {
@@ -9,7 +9,8 @@ async function listDevices(data) {
 }
 
 async function countAllDevices(data) {
-    const res = await Devices.countDocuments();
+    let res = undefined;
+    res = await Devices.countDocuments(data);
     //console.log(res);
     return res;
 }

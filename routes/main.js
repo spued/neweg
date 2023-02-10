@@ -169,6 +169,7 @@ module.exports = (passport) => {
     routes.post('/device_history_load',deviceman.post_device_history_load);
 
     routes.post('/dashboard_prefix', dashboad.post_user_prefix);
-    routes.post('/dashboard_prefix_data', dashboad.post_graph_prefix);
+    routes.post('/dashboard_online_data', dashboad.post_online_graph_data);
+    routes.post('/dashboard_tasks_data', dashboad.post_tasks_count);
     return routes;
 };
