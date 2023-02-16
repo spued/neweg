@@ -81,6 +81,19 @@ const logSchema = new mongoose.Schema({
 }, 
   { timestamps: true }
 )
+
+const deviceSchema = new mongoose.Schema({
+  circuit_number: {
+    type: String,
+    required: true
+  },
+  note: {
+    type: String,
+    default: '-'
+  }
+}, 
+  { timestamps: true }
+)
 const sessionSchema = new mongoose.Schema({
   expires: {
     type: String
@@ -91,6 +104,7 @@ const sessionSchema = new mongoose.Schema({
 })
 const User = mongoose.model('User', userSchema);
 const Logs = mongoose.model('Logs', logSchema);
+const DeviceNote = mongoose.model('DeviceNote', deviceSchema);
 const Sessions = mongoose.model('sessions', sessionSchema);
 // ACS db connect
 const acs_db  = mongoose.createConnection(process.env.ACS_DB_URL + 'genieacs', {
@@ -110,5 +124,6 @@ module.exports = {
   Sessions,
   Logs,
   Devices,
+  DeviceNote,
   Tasks
 };

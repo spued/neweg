@@ -10,38 +10,45 @@
           <h3>Device Management</h3>
         </div>
         <div class="col-xl-12">
-          
-            <button class="btn btn-success btn-history-cpe">-</button>
-            <button class="btn btn-success btn-history-cpe">-</button>
-            <button class="btn btn-success btn-history-cpe">-</button>
-            <button class="btn btn-success btn-history-cpe">-</button>
-            <button class="btn btn-success btn-history-cpe">-</button>
-            <button class="btn btn-success btn-history-cpe">-</button>
-            <button class="btn btn-success btn-history-cpe">-</button>
-            <button class="btn btn-success btn-history-cpe">-</button>
-            <button class="btn btn-success btn-history-cpe">-</button>
-            <button class="btn btn-success btn-history-cpe">-</button>
-          
-        </div>
-        <div class="col-xl-12">
           <div class="input-group user-note">
             <textarea class="form-control" id="user_note"cols="80" rows="3">-</textarea>
             <span>
-              <button class="btn btn-warning btn-save-note" id="btn_save_note">Save note</button>
+              <button class="btn btn-warning btn-save-note" id="btn_save_note">Note</button>
             </span>
           </div>
         </div>
         <div class="col-xl-12">
+          
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+            <button class="btn btn-success btn-history-cpe">-</button>
+          
+        </div>
+        
+        <div class="col-xl-12">
           <div class="main_search">
+            
               <div class="input-group">
+                
                   <input type="text" class="form-control" id="search_keyword" placeholder="Fill the number for searching."/>
                   <div class="input-group-addon">
                       <button class="form-control btn btn-success btn-search" id="search_button" aria-describedby="search_keyword">Search</button>
                   </div>
               </div>
+              <label class="text-success" id="device_note_pre_search"></label>
           </div>
           <input type="hidden" id="current_device_id" name="current_device_id" value="-">
+          <input type="hidden" id="current_circuit_number" name="current_circuit_number" value="-">
           <input type="hidden" id="product_class" name="product_class" value="-">
+          <input type="hidden" id="device_status" name="device_status" value="-">
+          
         </div>
         
       </div>
@@ -69,6 +76,7 @@
                   <th>WAN IP/MAC</th>
                   <td><div class="information" id="wan_ip">-</div></td>
                 </tr>
+                
               </tbody>
             </table>
           </div>
@@ -76,7 +84,16 @@
               <div class="device-canvas" id="device_canvas">
                 <canvas id="cpe_canvas" width=800 height="300"></canvas>
               </div>
-
+            </div>
+            <div class="col-xl-12">
+              <div class="device-note mb-2" id="device_note">
+                <div class="input-group">
+                  <textarea class="form-control" id="device_note_area"cols="80" rows="3">-</textarea>
+                  <span>
+                    <button class="btn btn-info btn-save-device-note" id="btn_save_device_note">Note</button>
+                  </span>
+                </div>
+              </div>
             </div>
             <div class="col-xl-12">  
                 <div id="device_config_tab_tab">	

@@ -9,7 +9,7 @@ const logger = require('../lib/logger');
 const { PasswordNoMatch, PasswordHashFailed, DbNoResult, StatusError } = require('../errors');
 const main = require('../controller/controller_main');
 const deviceman = require('../controller/controller_deviceman');
-const dashboad = require('../controller/controller_dashboard');
+const dashboard = require('../controller/controller_dashboard');
 
 function hashPassword(pwd) {
   return new Promise((res, rej) => bcrypt.hash(pwd, bcrypt.genSaltSync(), (err, hash) => {
@@ -140,6 +140,7 @@ module.exports = (passport) => {
 
     routes.get('/dashboard', isLogged, main.getDashboardPage);
     routes.get('/deviceman', isLogged, deviceman.getDeviceManPage);
+    routes.get('/admin_dashboard', isLogged, main.getAdminDashboardPage);
 
     routes.post('/logout', isLogged, main.post_logout_user);
     routes.post('/list_user', main.post_list_users);
@@ -167,9 +168,13 @@ module.exports = (passport) => {
     routes.post('/device_reboot', deviceman.post_device_reboot);
     routes.post('/device_history_save',deviceman.post_device_history_save);
     routes.post('/device_history_load',deviceman.post_device_history_load);
+    routes.post('/device_note_save',deviceman.post_device_note_save);
+    routes.post('/device_note_load',deviceman.post_device_note_load);
 
-    routes.post('/dashboard_prefix', dashboad.post_user_prefix);
-    routes.post('/dashboard_online_data', dashboad.post_online_graph_data);
-    routes.post('/dashboard_tasks_data', dashboad.post_tasks_count);
+    routes.post('/dashboard_prefix', dashboard.post_user_prefix);2
+    routes.post('/dashboard_online_data', dashboard.post_online_graph_data);
+    routes.post('/dashboard_tasks_data', dashboard.post_tasks_count);
+    routes.post('/dashboard_devices_group', dashboard.post_devices_group_count);
+    routes.post('/dashboard_devices_prefixes', dashboard.post_devices_prefix_count);
     return routes;
 };

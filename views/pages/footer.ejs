@@ -1,8 +1,21 @@
 
+<script type="text/javascript">
+    function do_logout() {
+        $.post('/logout',{}, function(res) {
+            if(res.code == 0) {
+                alert("Logged out complete.");
+                window.location.href = '/login';
+            } else {
+                alert("Error occurred.");
+            }
+            //console.log('logged out' + res.msg);
+        })
+    }
+</script>
     <footer>
         <div class="center_text mt-2" id="footer">
             <h5>
-                New Easy Gateway system &copy; 2023 Astra Communication Service Co.,Ltd Version 1.0.0
+                M.Cloud CPE Management system &copy; 2023 Astra Communication Service Co.,Ltd Version 1.0.0
             </h5>
         </div>
     </footer>

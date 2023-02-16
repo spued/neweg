@@ -12,7 +12,7 @@ const getDeviceManPage = (req, res) => {
     res.render('pages/deviceman', req.user);
 }
 const post_search_device = (req, res) => {
-    console.log("Controller: Main: Post Device search");
+    console.log("Controller: Main: Post Device search with " + req.body.cn);
     resData = {
         code : 1,
         msg : 'Error : Default',
@@ -57,6 +57,37 @@ const post_search_device = (req, res) => {
         res.json(resData);
     }
     
+}
+const post_device_note_save = (req, res) => {
+    console.log("Controller: Main: Post device note save");
+    resData = {
+        code : 1,
+        msg : 'Error : Default' 
+    };
+
+    //console.log(req.body);
+    db.save_note({
+        circuit_number : req.body.circuit_number,
+        note : req.body.note
+    });
+    res.json(resData);
+}
+const post_device_note_load = async (req, res) => {
+    console.log("Controller: Main: Post device note load");
+    resData = {
+        code : 1,
+        msg : 'Error : Default',
+        data : ''
+    };
+    //console.log(req.body);
+    const _data = await db.getNotefromCircuit(req.body.circuit_number);
+    console.log(_data);
+    resData.code = 0;
+    resData.msg = 'ok';
+    if(_data != 'no result') {
+        resData.data = _data.note;
+    }
+    res.json(resData);
 }
 const post_user_note_save = (req, res) => {
     console.log("Controller: Main: Post user note save");
@@ -495,5 +526,7 @@ module.exports = {
     post_port_forward_delete,
     post_device_history_save,
     post_device_history_load,
+    post_device_note_save,
+    post_device_note_load,
     post_device_reboot
 }

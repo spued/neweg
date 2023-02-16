@@ -6,7 +6,7 @@
     <div>
         <div class="card">
             <div class="card-header">
-                <h3>Dashboard</h3>
+                <h3>Administrator Dashboard</h3>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -15,31 +15,22 @@
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon1">Select prefix</span>
                                 <select class="form-control" id="select_prefix" name="select_prefix">
-                                    <option value="-1">All</option>
+                                    <option value="0">All</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                    
-                    <div class="col-xl-12">
+                    <div class="col-xl-6">
                         <p>
-                            <table class="table table-bordered" id="tableOnline">
+                            <table class="table table-bordered" id="tableDeviceGroup">
                                 <thead>
                                     <tr>
                                         <th>
-                                            Online
+                                            Product Class
                                         </th>
                                         <th>
-                                            Last 24H
-                                        </th>
-                                        <th>
-                                            More than 24H
-                                        </th>
-                                        <th>
-                                            Dead
-                                        </th>
-                                        <th>
-                                            Total
+                                            Quantity
                                         </th>
                                     </tr>
                                 </thead>
@@ -47,9 +38,9 @@
                             </table>
                         </p>
                     </div>
-                    <div class="col-xl-12">
-                        <div id="chart-wrapper">
-                            <canvas id="pie-chart"></canvas>
+                    <div class="col-xl-6">
+                        <div id="chart-wrapper" style="position: relative; height:40vh; width:80vw">
+                            <canvas id="bar-chart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -61,5 +52,5 @@
 <script type="text/javascript" src="/pub/js/bundle.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.12.1/datatables.min.js"></script>
 <script type="text/javascript" src="/pub/js/common.js"></script>
-<script type="text/javascript" src="/pub/js/dashboard.js" defer></script>
+<script type="text/javascript" src="/pub/js/admin_dashboard.js" defer></script>
 <%- include('./footer'); %>

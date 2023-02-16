@@ -24,6 +24,7 @@ if(history_cpe == null) history_cpe = [];
 var current_cpe = sessionStorage.getItem("current_cpe");
 //console.log("Working on " + current_cpe); // This is some sample text data
 
+var device_summary_array = undefined;
 
 $(document).ajaxStart(function(){
     $('#loadingModal').modal('show');
@@ -35,6 +36,7 @@ $(document).ajaxStop(function(){
 $(function() {
     //console.log('Device manager page are loaded');
     $('#device_canvas').attr('hidden','true');
+    $('#device_note').attr('hidden','true');
     $('#device_config_tab_tab').attr('hidden','true');
     $('#table_device_info').attr('hidden','true');
 
@@ -75,6 +77,16 @@ $('.btn-history-cpe').on('click', function(){
     //console.log($(this).text());
     if($(this).text() != '-') $('#search_keyword').val($(this).text()).trigger('focus');
 
+    $.post('/device_note_load',{ 
+        circuit_number : $(this).text()
+    }, (_res) => {
+        if(_res) {
+            $('#device_note_pre_search').text(_res.data);
+        } else {
+            $('#device_note_pre_search').text('');
+        }
+        
+    });
 });
 
 $('#search_button').on('click', function (evt) {
@@ -94,12 +106,21 @@ $('#search_button').on('click', function (evt) {
         } else if(res.data.length == 1) {
             $('#table_device_info').removeAttr('hidden');
             $('#device_canvas').removeAttr('hidden');
+            $('#device_note').removeAttr('hidden');
             $('#device_config_tab_tab').removeAttr('hidden');
             
             //console.log(res.data_t)
-            //console.log(res.data)
+           
             let cpe = res.data_t[0];
             let last_inform = moment(cpe.last_inform);
+            //console.log(last_inform);
+            if(!last_inform.isAfter(moment().subtract(1, 'hours'))) {
+                //console.log("device is offline");
+                $('#device_status').val('Offline');
+            } else {
+                //console.log("device is online");
+                $('#device_status').val('Online');
+            }
             $('#current_device_id').val(res.data[0]._id);
             $('#last_update').text(last_inform.format('DD/MMM/YYYY - HH:mm'));
             $('#circuit_number').text(cpe.circuit_number);
@@ -109,8 +130,9 @@ $('#search_button').on('click', function (evt) {
             $('#product_class').val(cpe.product_class);
             $('#software_version').text(cpe.software_version);
             $('#search_keyword').val(cpe.circuit_number);
+            $('#current_circuit_number').val(cpe.circuit_number);
             //console.log(cpe.device_summary);
-            const device_summary_array = cpe.device_summary.split(',');
+            device_summary_array = cpe.device_summary.split(',');
             
             device_summary = {};
             device_summary_array.forEach(element => {
@@ -166,8 +188,17 @@ $('#search_button').on('click', function (evt) {
             alert('Found many devices.');
             return 0;
         }
+    }).then(()=>{
+        
+        $.post('/device_note_load',{ 
+            circuit_number : $('#current_circuit_number').val() 
+        }, (_res) => {
+            //console.log(_res.data);
+            $('#device_note_area').val(_res.data);
+        });
     })
-    
+
+   
 })
 $(".nav-tabs a").on('click',function() {
     //console.log('a click');
@@ -187,6 +218,15 @@ function validateConfirmCode() {
       return true;
     }
 }
+$('#btn_save_device_note').on('click',function(evt){
+    let _post_data = {
+        circuit_number : $('#current_circuit_number').val(),
+        note : $('#device_note_area').val()
+    };
+    $.post('/device_note_save', _post_data, (res) => {
+        //console.log(res);
+    })
+})
 $('#btn_save_note').on('click',function(evt){
     let _post_data = {
         note : $('#user_note').val()
@@ -439,8 +479,15 @@ $('#device_system_link').on("shown.bs.tab", function(evt) {
                 if(res.code == 0) {
                     let _data = res.data.InternetGatewayDevice.DeviceInfo;
                     //console.log(_data);
-                    var duration = (new Date(_data.UpTime._value * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0];
-                    $('#uptime').val(duration + ' (' + _data.UpTime._value + ' seconds.)');
+                    if('UpTime' in _data) {
+                        //console.log('get uptime');
+                        var duration = (new Date(_data.UpTime._value * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0];
+                        $('#uptime').val(duration + ' (' + _data.UpTime._value + ' seconds.)');
+                    } else {
+                        //console.log('no uptime');
+                        $('#uptime').val('0');
+                    }
+                    
                     $('#provisioning_code').val(_data.ProvisioningCode._value);
                     
                 } else {
@@ -472,15 +519,21 @@ $('#device_wan_link').on("shown.bs.tab", function(evt) {
             }, (res) => {
                 if(res.code == 0) {
                     let _data = res.data.InternetGatewayDevice.WANDevice["1"].WANConnectionDevice["1"].WANPPPConnection[2];
-                    //console.log(_data);
-                    var duration = (new Date(_data.Uptime._value * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0];
-                    $('#wan_uptime').val(duration + ' (' + _data.Uptime._value + ' seconds.)');
+                    console.log(_data);
+                    if('Uptime' in _data && '_value' in _data.Uptime) {
+                        //console.log('get uptime');
+                        var duration = (new Date(_data.Uptime._value * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0];
+                        $('#wan_uptime').val(duration + ' (' + _data.Uptime._value + ' seconds.)');
+                    } else {
+                        //console.log('no uptime');
+                        $('#wan_uptime').val('0');
+                    }
+                    //$('#wan_uptime').val(duration + ' (' + _data.Uptime._value + ' seconds.)');
                     $('#wan_name').val(_data.Name._value); 
                     $('#wan_status').val(_data.ConnectionStatus._value);
                     $('#wan_ip_address').val(_data.ExternalIPAddress._value);
                     
                 } else {
-                    
                     console.log(res);
                 }
             })
@@ -510,14 +563,23 @@ $('#device_lan_link').on("shown.bs.tab", function(evt) {
                     let _data = res.data.InternetGatewayDevice.LANDevice[1].LANHostConfigManagement;
                     let number_host = parseInt(res.data.InternetGatewayDevice.LANDevice[1].Hosts.HostNumberOfEntries._value);
                     let hosts = res.data.InternetGatewayDevice.LANDevice[1].Hosts;
-                    
-                    $('#lan_dhcp_lease_time').val( _data.DHCPLeaseTime._value);
-                    $('#lan_dhcp_status').val(_data.DHCPServerEnable._value.toString()).trigger('change');
-                    $('#lan_ip_address').val(_data.IPRouters._value);
-                    $('#lan_netmask').val(_data.SubnetMask._value).trigger('change');
-                    $('#lan_dhcp_pool_start').val(_data.MinAddress._value);
-                    $('#lan_dhcp_pool_end').val(_data.MaxAddress._value);
-                    $('#lan_dns_server').val(_data.DNSServers._value);
+                    if('_value' in _data.DHCPServerEnable) {
+                        $('#lan_dhcp_lease_time').val( _data.DHCPLeaseTime._value);
+                        $('#lan_dhcp_status').val(_data.DHCPServerEnable._value.toString()).trigger('change');
+                        $('#lan_ip_address').val(_data.IPRouters._value);
+                        $('#lan_netmask').val(_data.SubnetMask._value).trigger('change');
+                        $('#lan_dhcp_pool_start').val(_data.MinAddress._value);
+                        $('#lan_dhcp_pool_end').val(_data.MaxAddress._value);
+                        $('#lan_dns_server').val(_data.DNSServers._value);
+                    } else {
+                        $('#lan_ip_address').val(_data.IPRouters._value);
+                        $('#lan_netmask').val(_data.SubnetMask._value).trigger('change');
+                        $('#lan_dhcp_status').val('false').trigger('change');
+                        $('#lan_dhcp_lease_time').val('-');
+                        $('#lan_dhcp_pool_start').val('-');
+                        $('#lan_dhcp_pool_end').val('-');
+                        $('#lan_dns_server').val('-');
+                    }
                     var _hosts_list = [];
                     if(number_host > 0) {
                         //console.log(hosts.Host);
@@ -567,6 +629,11 @@ $('#device_lan_link').on("shown.bs.tab", function(evt) {
 })
 $('#device_wlan_link').on("shown.bs.tab", function(evt) {
     current_config_tab = 'wlan';
+    //console.log(device_summary_array);
+    if(parseInt(device_summary_array[5].split(':')[1]) == 0) {
+        alert('Device has no wireless');
+        return 0;
+    }
     let _post_data = {
         id: 0,
         cn: $('#current_device_id').val(),
@@ -768,12 +835,22 @@ $('#device_voip_link').on("shown.bs.tab", function(evt) {
                     let _data = res.data.InternetGatewayDevice.Services.VoiceService[1].VoiceProfile[1];
                     //console.log(_data);
                     //_data.NumberOfLines._value;
-                    $('#line_1_status').text( _data.Line[1].Status._value);
-                    $('#line_2_status').text( _data.Line[2].Status._value);
-                    $('#line_1_number').val( _data.Line[1].SIP.AuthUserName._value);
-                    $('#line_1_password').val( _data.Line[1].SIP.AuthPassword._value);
-                    $('#line_2_number').val( _data.Line[2].SIP.AuthUserName._value);
-                    $('#line_2_password').val( _data.Line[2].SIP.AuthPassword._value);
+                    if(parseInt(device_summary_array[7].split(':')[1]) == 1) {
+                        //alert('Device 1 Voip');
+                        $('#line_1_status').text( _data.Line[1].Status._value);
+                        $('#line_1_number').val( _data.Line[1].SIP.AuthUserName._value);
+                        $('#line_1_password').val( _data.Line[1].SIP.AuthPassword._value);
+                        
+                    } else {
+                        $('#line_1_status').text( _data.Line[1].Status._value);
+                        $('#line_2_status').text( _data.Line[2].Status._value);
+                        $('#line_1_number').val( _data.Line[1].SIP.AuthUserName._value);
+                        $('#line_1_password').val( _data.Line[1].SIP.AuthPassword._value);
+                        $('#line_2_number').val( _data.Line[2].SIP.AuthUserName._value);
+                        $('#line_2_password').val( _data.Line[2].SIP.AuthPassword._value);
+                    }
+                    
+                    
                     $('#proxy_server_ip').val( _data.SIP.ProxyServer._value);
                 }
             })
@@ -916,6 +993,7 @@ function drawCPE(ctx,
     const lan_ip_status = cpe_lan_ip_status.split(',');
     const pon_status = cpe_pon_status.split(',');
     const voip_status = cpe_voip_status.split(',');
+    const _status = $('#device_status').val();
 
     //console.log(voip_status);
     const { width, height } = canvas.getBoundingClientRect();
@@ -925,6 +1003,10 @@ function drawCPE(ctx,
         width: 700,
         height: 200,
         scale: 50,
+        main_status : {
+            x : (width/5 - 50),
+            y : (height/2) - 15
+        },
         wan : { x : (width/5-40),
                 y : (height/2) + 0
         },
@@ -938,27 +1020,29 @@ function drawCPE(ctx,
                 y : (height/2) + 0
         },
     }
-    roundedRect(ctx, {
-        x: 50,
-        y: 100,
-        width: cpe_layout.width,
-        height: cpe_layout.height,
-        radius: 35,
-        color: "#00e673",
-        fill_color: "white"
-    });
+    if(_status == 'Online') {
+        roundedRect(ctx, {
+            x: 50,
+            y: 100,
+            width: cpe_layout.width,
+            height: cpe_layout.height,
+            radius: 35,
+            color: "#00e673",
+            fill_color: "white"
+        });
+    } else {
+        roundedRect(ctx, {
+            x: 50,
+            y: 100,
+            width: cpe_layout.width,
+            height: cpe_layout.height,
+            radius: 35,
+            color: "#e60011",
+            fill_color: "white"
+        });
+    }
+   
     // Load the sprite sheet from an image file
-
-    /* wifi_image.src = 'pub/img/wifi.png';
-    wifi_up_image.src = 'pub/img/wifi_up.png';
-    phone_image.src = 'pub/img/phone.png';
-    phone_up_image.src = 'pub/img/phone_up.png';
-    phone_down_image.src = 'pub/img/phone_down.png';
-    wan_image.src = 'pub/img/fiber.png';
-    wan_up_image.src = 'pub/img/fiber_up.png';
-    lan_image.src = 'pub/img/lan_port.png';
-    lan_up_image.src = 'pub/img/lan_port_up.png';
-    lan_disable_image.src = 'pub/img/lan_port_down.png'; */
 
     const imageUrls = [
         'pub/img/wifi.png',
@@ -1093,7 +1177,7 @@ function drawCPE(ctx,
                                 for(let i = 0; i < value; i++) {
                                         if(pon_status[2] === 'Up') {
                                             ctx.drawImage(wan_up_image,
-                                                cpe_layout.wan.x + (i * 50),
+                                                cpe_layout.wan.x + (i * 50)-25,
                                                 cpe_layout.wan.y,
                                                 cpe_layout.scale,
                                                 cpe_layout.scale
@@ -1117,11 +1201,11 @@ function drawCPE(ctx,
                                             Promise.all(pon_mw.map(mw => db_power(mw))).then((dbm) => {
                                                 //console.log(dbm);
                                                 ctx.fillText('TX: ' + dbm[0] + ' dBm' ,
-                                                cpe_layout.wan.x + 48,
+                                                cpe_layout.wan.x + 30,
                                                 cpe_layout.wan.y + 20 );
                                             
                                                 ctx.fillText('RX: ' + dbm[1] + ' dBm' ,
-                                                    cpe_layout.wan.x + 48,
+                                                    cpe_layout.wan.x + 30,
                                                     cpe_layout.wan.y + 40
                                                 );
                                             })
@@ -1150,14 +1234,14 @@ function drawCPE(ctx,
                                             if(voip_status[voip_index[i]] === 'Up') {
                                                 //console.log("draw UP image.")
                                                     ctx.drawImage(phone_up_image,
-                                                        cpe_layout.phone.x,
+                                                        cpe_layout.phone.x + 15,
                                                         cpe_layout.phone.y + (i * 50),
                                                         cpe_layout.scale-10,
                                                         cpe_layout.scale-10
                                                     );
                                             } else if(voip_status[voip_index[i]] === 'Error') {
                                                     ctx.drawImage(phone_down_image,
-                                                        cpe_layout.phone.x,
+                                                        cpe_layout.phone.x + 15,
                                                         cpe_layout.phone.y + (i * 50),
                                                         cpe_layout.scale-10,
                                                         cpe_layout.scale-10
@@ -1165,14 +1249,14 @@ function drawCPE(ctx,
                                                 
                                             } else if(voip_status[voip_index[i]] === 'Disabled') {
                                                 ctx.drawImage(phone_down_image,
-                                                    cpe_layout.phone.x,
+                                                    cpe_layout.phone.x +15,
                                                     cpe_layout.phone.y + (i * 50),
                                                     cpe_layout.scale-10,
                                                     cpe_layout.scale-10
                                                 );
                                             } else {
                                                     ctx.drawImage(phone_image,
-                                                        cpe_layout.phone.x,
+                                                        cpe_layout.phone.x +15,
                                                         cpe_layout.phone.y + (i * 50),
                                                         cpe_layout.scale-10,
                                                         cpe_layout.scale-10
@@ -1182,23 +1266,42 @@ function drawCPE(ctx,
                                             ctx.lineWidth = 3;
                                             ctx.fillStyle = "black";
                                             ctx.fillText(voip_status[i * 2],
-                                                cpe_layout.phone.x + 35,
+                                                cpe_layout.phone.x + 50,
                                                 cpe_layout.phone.y + (i * 50) + 25
                                             );
                                             
                                         }
-                                        ctx.font = "14px Arial";
-                                        ctx.lineWidth = 3;
-                                        ctx.fillStyle = "black";
-                                        ctx.fillText('SIP server: ' + voip_status[4],
-                                                cpe_layout.phone.x + 20,
-                                                cpe_layout.phone.y + 110
-                                        );
+                                        if(value == 1) {
+                                            ctx.font = "14px Arial";
+                                            ctx.lineWidth = 3;
+                                            ctx.fillStyle = "black";
+                                            ctx.fillText('SIP server: ' + voip_status[2],
+                                                    cpe_layout.phone.x + 35,
+                                                    cpe_layout.phone.y + 110
+                                            );
+                                        } else {
+                                            ctx.font = "14px Arial";
+                                            ctx.lineWidth = 3;
+                                            ctx.fillStyle = "black";
+                                            ctx.fillText('SIP server: ' + voip_status[4],
+                                                    cpe_layout.phone.x + 35,
+                                                    cpe_layout.phone.y + 110
+                                            );
+                                        }
+                                        
                         break;
                     default:
                         break;
                     }
             }
+
+            ctx.font = "18px Arial";
+            ctx.lineWidth = 3;
+            ctx.fillStyle = "black";
+            ctx.fillText($('#device_status').val(),
+                cpe_layout.main_status.x,
+                cpe_layout.main_status.y
+            );
         })
         .catch(error => {
           // An error occurred while loading one or more images

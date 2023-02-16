@@ -7,6 +7,9 @@ class AppError extends Error {
 }
 
 class DbError extends AppError {
+  constructor() {
+    super('Data not found');
+  }
 }
 
 class StatusError extends AppError {

@@ -47,12 +47,14 @@ const getRegisterPage = (req,res) => {
 
 const getDashboardPage = (req,res) => {
   console.log("Controller: Main: Get Dashboard page");
-  /* db.getOverAllNEData().then(function(rows) {
-      // now you have your rows, you can see if there are <20 of them
-        //console.log(rows);
-  }).catch((err) => setImmediate(() => { throw err; })); */
   res.render('pages/dashboard', req.user);
 }
+
+const getAdminDashboardPage = (req,res) => {
+  console.log("Controller: Main: Get Admin Dashboard page");
+  res.render('pages/admin_dashboard', req.user);
+}
+
 const getUserMan = (req,res) => {
   //console.log(req.user);
   console.log("Controller: Main: Get user manager page for " + req.user.fullname);
@@ -326,6 +328,7 @@ module.exports = {
     getMainPage,
     getRegisterPage,
     getDashboardPage,
+    getAdminDashboardPage,
     getUserMan,
     getUserSetting,
 

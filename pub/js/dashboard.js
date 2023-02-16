@@ -1,24 +1,43 @@
 var onlinePieChart = undefined;
 
 window.addEventListener('load', function() {
-    console.log('All assets are loaded');
+    //console.log('All assets are loaded');
     drawGraph();
 
     $.post('/dashboard_prefix',{}, (res) => {
+        $('#select_prefix > option').val(res.data.join(','));
         $.each(res.data, function (i, item) {
             $('#select_prefix').append($('<option>', {
                 value: item,
                 text : item
             }));
         });
+    }).then(() => {
+        $.post('/dashboard_online_data',{
+            prefix : $('#select_prefix').val()
+        }, (res) => {
+            //console.log(res);
+            onlinePieChart.data.datasets[0].data = res.data;
+            onlinePieChart.update();
+            let html = "<tr>";
+            $("#tableOnline tbody").append();
+            res.data.forEach(element => {
+                html +="<td>" + element + "</td>";
+            });
+            html += "</tr>";
+            $("#tableOnline tbody").append(html);
+        })
     })
+});
 
+$('#select_prefix').on('change',(evt) => {
     $.post('/dashboard_online_data',{
-        prefix : 25
+        prefix : $('#select_prefix').val()
     }, (res) => {
         //console.log(res);
         onlinePieChart.data.datasets[0].data = res.data;
         onlinePieChart.update();
+        $("#tableOnline tbody").empty();
         let html = "<tr>";
         $("#tableOnline tbody").append();
         res.data.forEach(element => {
@@ -27,8 +46,7 @@ window.addEventListener('load', function() {
         html += "</tr>";
         $("#tableOnline tbody").append(html);
     })
-
-});
+})
 
 function drawGraph() {
     var ctx = document.getElementById('pie-chart').getContext('2d');
@@ -51,16 +69,16 @@ function drawGraph() {
                     '#473C33',
                     '#00425A'
                 ],
-                borderWidth: 1
+                borderWidth: 2
             }]
         },
         options: {
             scales: {
-                yAxes: [{
+                /* yAxes: [{
                     ticks: {
                         beginAtZero: true
                     }
-                }]
+                }] */
             },
             responsive: true
         }
