@@ -32,7 +32,20 @@ $(document).ajaxStart(function(){
 $(document).ajaxStop(function(){
     $('#loadingModal').modal('hide');
 });
-  
+
+function formatTime(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.round(seconds % 60);
+    return [
+      h,
+      m > 9 ? m : (h ? '0' + m : m || '0'),
+      s > 9 ? s : '0' + s
+    ].filter(Boolean).join(':');
+}
+
+
+
 $(function() {
     //console.log('Device manager page are loaded');
     $('#device_canvas').attr('hidden','true');
@@ -205,18 +218,210 @@ $(".nav-tabs a").on('click',function() {
     $(this).tab('show');
 });
 
-function validateConfirmCode() {
-    let code = $("#provisioning_code").val();
-    let passwordValue = $("#password").val();
-    if (code == '') {
-      $("#code_check").show();
-      $("#code_check").html("**field empty");
-      $("#code_check").css("color", "red");
+const checkValidIpv4 = (ipaddress) => {
+    //console.log(ipaddress);
+    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {  
+        return (true)  
+      }  
+      //console.log("You have entered an invalid IP address!")  
+      return (false)  
+}
+
+function validateSystemSetting() {
+    if ($("#provisioning_code").val() == '') {
+      $("#provisioning_code_check").show();
+      $("#provisioning_code_check").html("**field empty");
+      $("#provisioning_code_check").css("color", "red");
       return false;
     } else {
-      $("#code_check").hide();
+      $("#provisioning_code_check").hide();
       return true;
     }
+}
+function validateLANSetting() {
+    let result = true;
+    if(!checkValidIpv4($("#lan_ip_address").val())) {
+        $("#lan_ip_address_check").show();
+        $("#lan_ip_address_check").html("**IP address");
+        $("#lan_ip_address_check").css("color", "red");
+        result = false;
+    } else {
+        $("#lan_ip_address_check").hide();
+        
+    }
+    if(!checkValidIpv4($("#lan_dhcp_pool_start").val())) {
+        $("#lan_dhcp_pool_start_check").show();
+        $("#lan_dhcp_pool_start_check").html("**IP address");
+        $("#lan_dhcp_pool_start_check").css("color", "red");
+        result = false;
+    } else {
+        $("#lan_dhcp_pool_start_check").hide();
+        
+    }
+    if(!checkValidIpv4($("#lan_dhcp_pool_end").val())) {
+        $("#lan_dhcp_pool_end_check").show();
+        $("#lan_dhcp_pool_end_check").html("**IP address");
+        $("#lan_dhcp_pool_end_check").css("color", "red");
+        result = false;
+    } else {
+        $("#lan_dhcp_pool_end_check").hide();
+        
+    }
+    if(!checkValidIpv4($("#lan_dns_server").val())) {
+        $("#lan_dns_server_check").show();
+        $("#lan_dns_server_check").html("**IP address");
+        $("#lan_dns_server_check").css("color", "red");
+        result = false;
+    } else {
+        $("#lan_dns_server_check").hide();
+    }
+    let pattern = /^-?\d*\.?\d*$/;
+    if(!(pattern.test($("#lan_dhcp_lease_time").val()) && $("#lan_dhcp_lease_time").val() != '')) {
+        $("#lan_dhcp_lease_time_check").show();
+        $("#lan_dhcp_lease_time_check").html("**Number");
+        $("#lan_dhcp_lease_time_check").css("color", "red");
+        result = false;
+    } else {
+        $("#lan_dhcp_lease_time_check").hide();
+    }
+    return result;
+}
+
+function validateWLANSetting() {
+    let result = true;
+
+    if(!$('#wlan_ssid_24').val() != '') {
+        $("#wlan_ssid_24_check").show();
+        $("#wlan_ssid_24_check").html("**Required");
+        $("#wlan_ssid_24_check").css("color", "red");
+        result = false;
+    } else {
+        $("#wlan_ssid_24_check").hide();
+    }
+    if(!$('#wlan_key_24').val() != '') {
+        $("#wlan_key_24_check").show();
+        $("#wlan_key_24_check").html("**Required");
+        $("#wlan_key_24_check").css("color", "red");
+        result = false;
+    } else {
+        $("#wlan_key_24_check").hide();
+    }
+    if(!$('#wlan_ssid_5').val() != '') {
+        $("#wlan_ssid_5_check").show();
+        $("#wlan_ssid_5_check").html("**Required");
+        $("#wlan_ssid_5_check").css("color", "red");
+        result = false;
+    } else {
+        $("#wlan_ssid_5_check").hide();
+    }
+    if(!$('#wlan_key_5').val() != '') {
+        $("#wlan_key_5_check").show();
+        $("#wlan_key_5_check").html("**Required");
+        $("#wlan_key_5_check").css("color", "red");
+        result = false;
+    } else {
+        $("#wlan_key_5_check").hide();
+    }
+    return result;
+}
+
+function validateVoIPSetting() {
+    let result = true;
+
+    if(!$('#line_1_number').val() != '') {
+        $("#line_1_number_check").show();
+        $("#line_1_number_check").html("**Required");
+        $("#line_1_number_check").css("color", "red");
+        result = false;
+    } else {
+        $("#wlan_ssid_24_check").hide();
+    }
+    if(!$('#line_1_password').val() != '') {
+        $("#line_1_password_check").show();
+        $("#line_1_password_check").html("**Required");
+        $("#line_1_password_check").css("color", "red");
+        result = false;
+    } else {
+        $("#line_1_password_check").hide();
+    }
+    if(!$('#line_2_number').val() != '') {
+        $("#line_2_number_check").show();
+        $("#line_2_number_check").html("**Required");
+        $("#line_2_number_check").css("color", "red");
+        result = false;
+    } else {
+        $("#wlan_ssid_24_check").hide();
+    }
+    if(!$('#line_2_password').val() != '') {
+        $("#line_2_password_check").show();
+        $("#line_2_password_check").html("**Required");
+        $("#line_2_password_check").css("color", "red");
+        result = false;
+    } else {
+        $("#line_2_password_check").hide();
+    }
+    if(!checkValidIpv4($("#proxy_server_ip").val())) {
+        $("#proxy_server_ip_check").show();
+        $("#proxy_server_ip_check").html("**IP address");
+        $("#proxy_server_ip_check").css("color", "red");
+        result = false;
+    } else {
+        $("#proxy_server_ip_check").hide();
+        
+    }
+    return result;
+}
+function validateDDNSSetting() {
+    let result = true;
+    if(!$('#ddns_hostname').val() != '') {
+        $("#ddns_hostname_check").show();
+        $("#ddns_hostname_check").html("**Required");
+        $("#ddns_hostname_check").css("color", "red");
+        result = false;
+    } else {
+        $("#ddns_hostname_check").hide();
+    }
+    if(!$('#ddns_username').val() != '') {
+        $("#ddns_username_check").show();
+        $("#ddns_username_check").html("**Required");
+        $("#ddns_username_check").css("color", "red");
+        result = false;
+    } else {
+        $("#ddns_username_check").hide();
+    }
+    if(!$('#ddns_password').val() != '') {
+        $("#ddns_password_check").show();
+        $("#ddns_password_check").html("**Required");
+        $("#ddns_password_check").css("color", "red");
+        result = false;
+    } else {
+        $("#ddns_password_check").hide();
+    }
+    if(!$('#ddns_server').val() != '') {
+        $("#ddns_server_check").show();
+        $("#ddns_server_check").html("**Required");
+        $("#ddns_server_check").css("color", "red");
+        result = false;
+    } else {
+        $("#ddns_server_check").hide();
+    }
+    return result;
+}
+
+function validatePortForwardSetting() {
+    let result = true;
+    if(!($('#e_external_port').val() != '' && $('#e_external_port').val() != '0' &&
+            $('#e_external_port').val() != '' && $('#e_external_port').val() != '0' &&
+            $('#e_external_port').val() != '' && $('#e_internal_ip').val() != '0.0.0.0'
+        )) {
+        $("#port_forward_check").show();
+        $("#port_forward_check").html("** Data Required or not equal to 0");
+        $("#port_forward_check").css("color", "red");
+        result = false;
+    } else {
+        $("#port_forward_check").hide();
+    }
+    return result;
 }
 $('#btn_save_device_note').on('click',function(evt){
     let _post_data = {
@@ -240,7 +445,7 @@ $('.btn-save').on('click',function(evt){
     switch(current_config_tab) {
         case 'system':
             //console.log('system save clicked');
-            if(validateConfirmCode()) {
+            if(validateSystemSetting()) {
                 _post_data = {
                     product_class : $('#product_class').val(),
                     deviceId : $('#current_device_id').val(),
@@ -251,84 +456,86 @@ $('.btn-save').on('click',function(evt){
                 $.post('/system_save', _post_data, (res) => {
                     //console.log(res);
                 })
-            } else {
-
             }
             break;
         case 'lan':
             //console.log('lan save clicked');
-            // prepare paramter
-            _post_data = {
-                product_class : $('#product_class').val(),
-                deviceId : $('#current_device_id').val(),
-                lan_ip : $('#lan_ip_address').val(),
-                lan_netmask : $('#lan_netmask').val(),
-                lan_dhcp_status : $('#lan_dhcp_status').val(),
-                lan_dhcp_pool_start : $('#lan_dhcp_pool_start').val(),
-                lan_dhcp_pool_end : $('#lan_dhcp_pool_end').val(),
-                lan_dhcp_lease_time : $('#lan_dhcp_lease_time').val(),
-                lan_dns_servers : $('#lan_dns_server').val()
+            if(validateLANSetting()) {
+                _post_data = {
+                    product_class : $('#product_class').val(),
+                    deviceId : $('#current_device_id').val(),
+                    lan_ip : $('#lan_ip_address').val(),
+                    lan_netmask : $('#lan_netmask').val(),
+                    lan_dhcp_status : $('#lan_dhcp_status').val(),
+                    lan_dhcp_pool_start : $('#lan_dhcp_pool_start').val(),
+                    lan_dhcp_pool_end : $('#lan_dhcp_pool_end').val(),
+                    lan_dhcp_lease_time : $('#lan_dhcp_lease_time').val(),
+                    lan_dns_servers : $('#lan_dns_server').val()
+                }
+                // send ajax request for data
+                $.post('/lan_save', _post_data, (res) => {
+                    //console.log(res);
+                })
             }
-            // send ajax request for data
-            $.post('/lan_save', _post_data, (res) => {
-                console.log(res);
-            })
             break;
         case 'wlan':
             //console.log('lan save clicked');
-            // prepare paramter
-            _post_data = {
-                product_class : $('#product_class').val(),
-                deviceId : $('#current_device_id').val(),
-                wlan_ssid_24 : $('#wlan_ssid_24').val(),
-                wlan_key_24 : $('#wlan_key_24').val(),
-                wlan_channel_24 : $('#wlan_channel_24').val(),
-                wlan_ssid_5 : $('#wlan_ssid_5').val(),
-                wlan_key_5 : $('#wlan_key_5').val(),
-                wlan_channel_5 : $('#wlan_channel_5').val()    
+            if(validateWLANSetting()) {
+                _post_data = {
+                    product_class : $('#product_class').val(),
+                    deviceId : $('#current_device_id').val(),
+                    wlan_ssid_24 : $('#wlan_ssid_24').val(),
+                    wlan_key_24 : $('#wlan_key_24').val(),
+                    wlan_channel_24 : $('#wlan_channel_24').val(),
+                    wlan_ssid_5 : $('#wlan_ssid_5').val(),
+                    wlan_key_5 : $('#wlan_key_5').val(),
+                    wlan_channel_5 : $('#wlan_channel_5').val()    
+                }
+                // send ajax request for data
+                $.post('/wlan_save', _post_data, (res) => {
+                    //console.log(res);
+                })
             }
-            // send ajax request for data
-            $.post('/wlan_save', _post_data, (res) => {
-                console.log(res);
-            })
             break;
         case 'voip':
             //console.log('lan save clicked');
-            // prepare paramter
-            _post_data = {
-                product_class : $('#product_class').val(),
-                deviceId : $('#current_device_id').val(),
-                voip_number_1 : $('#line_1_number').val(),
-                voip_password_1 : $('#line_1_password').val(),
-                voip_number_2 : $('#line_2_number').val(),
-                voip_password_2 : $('#line_2_password').val(),
-                voip_proxy_server : $('#proxy_server_ip').val()    
+            if(validateVoIPSetting()) {
+                _post_data = {
+                    product_class : $('#product_class').val(),
+                    deviceId : $('#current_device_id').val(),
+                    voip_number_1 : $('#line_1_number').val(),
+                    voip_password_1 : $('#line_1_password').val(),
+                    voip_number_2 : $('#line_2_number').val(),
+                    voip_password_2 : $('#line_2_password').val(),
+                    voip_proxy_server : $('#proxy_server_ip').val()    
+                }
+                // send ajax request for data
+                $.post('/voip_save', _post_data, (res) => {
+                    //console.log(res);
+                })
             }
-            // send ajax request for data
-            $.post('/voip_save', _post_data, (res) => {
-                console.log(res);
-            })
             break;
         case 'ddns':
             //console.log('lan save clicked');
-            // prepare paramter
-            _post_data = {
-                product_class : $('#product_class').val(),
-                deviceId : $('#current_device_id').val(),
-                ddns_enable : $('#ddns_enable').val(),
-                ddns_provider : $('#ddns_provider').val(),
-                ddns_hostname : $('#ddns_hostname').val(),
-                ddns_username : $('#ddns_username').val(),
-                ddns_password : $('#ddns_password').val(),
-                ddns_server : $('#ddns_server').val()  
+            if(validateDDNSSetting()) {
+                _post_data = {
+                    product_class : $('#product_class').val(),
+                    deviceId : $('#current_device_id').val(),
+                    ddns_enable : $('#ddns_enable').val(),
+                    ddns_provider : $('#ddns_provider').val(),
+                    ddns_hostname : $('#ddns_hostname').val(),
+                    ddns_username : $('#ddns_username').val(),
+                    ddns_password : $('#ddns_password').val(),
+                    ddns_server : $('#ddns_server').val()  
+                }
+                // send ajax request for data
+                $.post('/ddns_save', _post_data, (res) => {
+                    //console.log(res);
+                })
             }
-            // send ajax request for data
-            $.post('/ddns_save', _post_data, (res) => {
-                console.log(res);
-            })
             break;
         default:
-            console.log('default save clicked')
+            //console.log('default save clicked')
             break;
     }
 })
@@ -336,7 +543,7 @@ $('.btn-save').on('click',function(evt){
 $(document).on('click','.btn-edit-port-forward', function (evt) {
     const modal = $('#modalPortForward');
     const data = $(this).closest("tr")[0].innerText.split('\t');
-    console.log(data);
+    //console.log(data);
     modal.find('#e_select_enable').val(data[4]);
     modal.find('#e_external_port').val(data[1]);
     modal.find('#e_internal_port').val(data[2]);
@@ -348,26 +555,28 @@ $(document).on('click','.btn-edit-port-forward', function (evt) {
 
 $(document).on('click', '.btn-save-port-forward', function (evt) {
     const modal = $('#modalPortForward');
-    const _post_data = {
-        deviceId : $('#current_device_id').val(),
-        pf_enable : modal.find('#e_select_enable').val(),
-        pf_external_port : modal.find('#e_external_port').val(),
-        pf_internal_port : modal.find('#e_internal_port').val(),
-        pf_internal_ip : modal.find('#e_internal_ip').val(),
-        pf_action : modal.find('#action_type').val(),
-        pf_index : modal.find('#current_index').val()
-    }
-    // send ajax request for data
-    $.post('/port_forward_save', _post_data, (res) => {
-        //console.log(res);
-        if(res.code == 0) {
-            alert('Port forward saved.');
-            $('#device_port_forward_link').trigger('shown.bs.tab');
-        } else {
-            alert('Error occurred.');
+    if(validatePortForwardSetting()) {
+        const _post_data = {
+            deviceId : $('#current_device_id').val(),
+            pf_enable : modal.find('#e_select_enable').val(),
+            pf_external_port : modal.find('#e_external_port').val(),
+            pf_internal_port : modal.find('#e_internal_port').val(),
+            pf_internal_ip : modal.find('#e_internal_ip').val(),
+            pf_action : modal.find('#action_type').val(),
+            pf_index : modal.find('#current_index').val()
         }
-    })
+        // send ajax request for data
+        $.post('/port_forward_save', _post_data, (res) => {
+            //console.log(res);
+            if(res.code == 0) {
+                alert('Port forward saved.');
+                $('#device_port_forward_link').trigger('shown.bs.tab');
+            } else {
+                alert('Error occurred.');
+            }
+        })
     modal.modal('hide');
+    }
 });
 
 $('#btn_add_port_forward').on('click', function (evt) {
@@ -441,14 +650,14 @@ $('.btn-refresh').on('click',function(evt){
 })
 
 $('.btn-reboot').on('click',function(evt){
-    console.log('Device reboot clicked');
+    //console.log('Device reboot clicked');
     if(confirm("Reoobt device?")) {
         let _post_data = {
             deviceId : $('#current_device_id').val()
         }
         // send ajax request for data
         $.post('/device_reboot', _post_data, (res) => {
-            console.log(res);
+            //console.log(res);
         })
     } else {
         return 0;
@@ -468,7 +677,7 @@ $('#device_system_link').on("shown.bs.tab", function(evt) {
             if(res.code == 0) {
                 //return res.data;
             } else {
-                console.log(res);
+                //console.log(res);
             }
         }).then((data) => {
             
@@ -481,7 +690,7 @@ $('#device_system_link').on("shown.bs.tab", function(evt) {
                     //console.log(_data);
                     if('UpTime' in _data) {
                         //console.log('get uptime');
-                        var duration = (new Date(_data.UpTime._value * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0];
+                        var duration = formatTime(_data.UpTime._value);
                         $('#uptime').val(duration + ' (' + _data.UpTime._value + ' seconds.)');
                     } else {
                         //console.log('no uptime');
@@ -492,7 +701,7 @@ $('#device_system_link').on("shown.bs.tab", function(evt) {
                     
                 } else {
                     
-                    console.log(res);
+                    //console.log(res);
                 }
             })
         })
@@ -510,7 +719,7 @@ $('#device_wan_link').on("shown.bs.tab", function(evt) {
             if(res.code == 0) {
                 //return res.data;
             } else {
-                console.log(res);
+                //console.log(res);
             }
         }).then((data) => {
             $.post('/device_get_params', {
@@ -519,10 +728,10 @@ $('#device_wan_link').on("shown.bs.tab", function(evt) {
             }, (res) => {
                 if(res.code == 0) {
                     let _data = res.data.InternetGatewayDevice.WANDevice["1"].WANConnectionDevice["1"].WANPPPConnection[2];
-                    console.log(_data);
+                    //console.log(_data);
                     if('Uptime' in _data && '_value' in _data.Uptime) {
                         //console.log('get uptime');
-                        var duration = (new Date(_data.Uptime._value * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0];
+                        var duration = formatTime(_data.Uptime._value);
                         $('#wan_uptime').val(duration + ' (' + _data.Uptime._value + ' seconds.)');
                     } else {
                         //console.log('no uptime');
@@ -534,7 +743,7 @@ $('#device_wan_link').on("shown.bs.tab", function(evt) {
                     $('#wan_ip_address').val(_data.ExternalIPAddress._value);
                     
                 } else {
-                    console.log(res);
+                    //console.log(res);
                 }
             })
         })
@@ -552,7 +761,7 @@ $('#device_lan_link').on("shown.bs.tab", function(evt) {
             if(res.code == 0) {
                 //return res.data;
             } else {
-                console.log(res);
+                //console.log(res);
             }
         }).then((data) => {
             $.post('/device_get_params', {
@@ -621,7 +830,7 @@ $('#device_lan_link').on("shown.bs.tab", function(evt) {
                     
                 } else {
                     
-                    console.log(res);
+                    //console.log(res);
                 }
             })
         })
@@ -644,7 +853,7 @@ $('#device_wlan_link').on("shown.bs.tab", function(evt) {
             if(res.code == 0) {
                 //return res.data;
             } else {
-                console.log(res);
+                //console.log(res);
             }
         }).then((data) => {
             $.post('/device_get_params', {
@@ -707,7 +916,7 @@ $('#device_wlan_link').on("shown.bs.tab", function(evt) {
                     $('#lan_hosts_list').val(_hosts_list); */
                     
                 } else {
-                    console.log(res);
+                    //console.log(res);
                 }
             }).then(() => {})
         })              
@@ -757,7 +966,7 @@ $(document).on('click','#btn_scan_24',() => {
                 { data: 'rssi' }
             ],
             onCreateRow: (data) => {
-                console.log(data);
+                //console.log(data);
             }
         });
     }
@@ -806,7 +1015,7 @@ $(document).on('click','#btn_scan_5',() => {
                 { data: 'rssi' }
             ],
             onCreateRow: (data) => {
-                console.log(data);
+                //console.log(data);
             }
         });
     }
@@ -824,7 +1033,7 @@ $('#device_voip_link').on("shown.bs.tab", function(evt) {
             if(res.code == 0) {
                 //return res.data;
             } else {
-                console.log(res);
+                //console.log(res);
             }
         }).then((data) => {
             $.post('/device_get_params', {
@@ -870,7 +1079,7 @@ $('#device_ddns_link').on("shown.bs.tab", function(evt) {
             if(res.code == 0) {
                 //return res.data;
             } else {
-                console.log(res);
+                //console.log(res);
             }
         }).then((data) => {
             $.post('/device_get_params', {
@@ -910,7 +1119,7 @@ $('#device_port_forward_link').on("shown.bs.tab", function(evt) {
             if(res.code == 0) {
                 //return res.data;
             } else {
-                console.log(res);
+                //console.log(res);
             }
         }).then((data) => {
             $.post('/device_get_params', {
@@ -923,7 +1132,7 @@ $('#device_port_forward_link').on("shown.bs.tab", function(evt) {
                     //console.log('number of entries = ' + _number);
                     if(_number > 0) {
                         let _data = _res.data.InternetGatewayDevice.WANDevice[1].WANConnectionDevice[1].WANPPPConnection[2].PortMapping;
-                        console.log(_data);
+                        //console.log(_data);
                         $('#tablePortForward tbody').empty();
                         for (const [key, value] of Object.entries(_data)) {
                             if(!isNaN(key)) {
