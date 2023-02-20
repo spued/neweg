@@ -17,8 +17,6 @@ window.addEventListener('load', function() {
             prefix : $('#select_prefix').val()
         }, (res) => {
             //console.log(res);
-            onlinePieChart.data.datasets[0].data = res.data;
-            onlinePieChart.update();
             let html = "<tr>";
             $("#tableOnline tbody").append();
             res.data.forEach(element => {
@@ -26,6 +24,10 @@ window.addEventListener('load', function() {
             });
             html += "</tr>";
             $("#tableOnline tbody").append(html);
+
+            onlinePieChart.data.datasets[0].data = res.data.slice(0,-1);
+            onlinePieChart.update();
+            
         })
     })
 });
@@ -61,13 +63,13 @@ function drawGraph() {
                     '#1F8A70',
                     '#FC7200',
                     '#473C33',
-                    '#00425A'
+                    '#FF0000'
                 ],
                 borderColor: [
                     '#1F8A70',
                     '#FC7200',
                     '#473C33',
-                    '#00425A'
+                    '#FF0000'
                 ],
                 borderWidth: 2
             }]
