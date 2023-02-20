@@ -124,11 +124,15 @@ const post_device_history_save = (req, res) => {
         msg : 'Error : Default' 
     };
 
-    //console.log(req.body);
-    db.save_user({
-        user_id : req.user._id,
-        history_data : req.body.history_data
-    });
+    //console.log(req.user);
+    if(req.user != undefined) {
+        db.save_user({
+            user_id : req.user._id,
+            history_data : req.body.history_data
+        });
+        resData.code = 0;
+        resData.msg = 'ok';
+    }
     res.json(resData);
 }
 const post_device_history_load = async (req, res) => {
