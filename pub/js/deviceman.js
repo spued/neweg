@@ -694,7 +694,7 @@ $('#device_system_link').on("shown.bs.tab", function(evt) {
                         $('#uptime').val(duration + ' (' + _data.UpTime._value + ' seconds.)');
                     } else {
                         //console.log('no uptime');
-                        $('#uptime').val('0');
+                        $('#uptime').val('Not available');
                     }
                     
                     $('#provisioning_code').val(_data.ProvisioningCode._value);
@@ -735,11 +735,13 @@ $('#device_wan_link').on("shown.bs.tab", function(evt) {
                         $('#wan_uptime').val(duration + ' (' + _data.Uptime._value + ' seconds.)');
                     } else {
                         //console.log('no uptime');
-                        $('#wan_uptime').val('0');
+                        $('#wan_uptime').val('Not available');
                     }
                     //$('#wan_uptime').val(duration + ' (' + _data.Uptime._value + ' seconds.)');
-                    $('#wan_name').val(_data.Name._value); 
-                    $('#wan_status').val(_data.ConnectionStatus._value);
+                    if(_data.Name._value) $('#wan_name').val(_data.Name._value); 
+                    else $('#wan_name').val('Not show'); 
+                    if(_data.ConnectionStatus._value) $('#wan_status').val(_data.ConnectionStatus._value);
+                    else $('#wan_status').val('Not show'); 
                     $('#wan_ip_address').val(_data.ExternalIPAddress._value);
                     
                 } else {
@@ -841,6 +843,10 @@ $('#device_wlan_link').on("shown.bs.tab", function(evt) {
     //console.log(device_summary_array);
     if(parseInt(device_summary_array[5].split(':')[1]) == 0) {
         alert('Device has no wireless');
+        $('#wlan_ssid_5').prop('disabled', true);
+        $('#btn_scan_5').prop('disabled', true);
+        $('#wlan_ssid_24').prop('disabled', true);
+        $('#btn_scan_24').prop('disabled', true);
         return 0;
     }
     let _post_data = {
@@ -864,56 +870,57 @@ $('#device_wlan_link').on("shown.bs.tab", function(evt) {
                     let _data = res.data.InternetGatewayDevice.LANDevice[1].WLANConfiguration;
     
                     //console.log(_data[1].AutoChannelEnable);
-                    //console.log(number_host);
                     $('#wlan_channel_24').find('option').remove().end()
                         .append('<option value="0">Auto</option>').val('0');
                     $('#wlan_channel_5').find('option').remove().end()
                     .append('<option value="0">Auto</option>').val('0');
 
-                    let channel_list_24 = _data[1].PossibleChannels._value.split(',');
-                    if(channel_list_24.length > 0 ) {
-                        channel_list_24.forEach(number => {
-                            $('#wlan_channel_24').append($('<option>', { 
-                                value: number,
-                                text : number
-                            }));
-                        })
-                    }
-                    let channel_list_5 = _data[5].PossibleChannels._value.split(',');
-                    if(channel_list_5.length > 0 ) {
-                        channel_list_5.forEach(number => {
-                            $('#wlan_channel_5').append($('<option>', { 
-                                value: number,
-                                text : number
-                            }));
-                        })
-                    }
-                    $('#wlan_ssid_24').val( _data[1].SSID._value);
-                    $('#wlan_key_24').val(_data[1].PreSharedKey[1].KeyPassphrase._value);
-                   
-                    if(!(_data[1].AutoChannelEnable._value == true))
-                        $('#wlan_channel_24').val(_data[1].Channel._value);
-                    $('#wlan_ssid_5').val( _data[5].SSID._value);
-                    $('#wlan_key_5').val(_data[5].PreSharedKey[1].KeyPassphrase._value);
-                    if(!(_data[5].AutoChannelEnable._value == true))
-                        $('#wlan_channel_5').val(_data[5].Channel._value);
-                    /*
-                    var _hosts_list = '';
-                    if(number_host > 0) {
-                        //console.log(hosts.Host);
-                        for (const [key, value] of Object.entries(hosts.Host)) {
-                            //console.log(`${key}: ${value}`);
-                            if(!isNaN(key)) {
-                                _hosts_list += (
-                                    key + ': ' +
-                                    value.HostName._value + ', ' +
-                                    value.MACAddress._value + ', ' +
-                                    value.IPAddress._value
-                                    + '\r\n');
-                            }
+                    if(_data[1].PossibleChannels._value) {
+                        let channel_list_24 = _data[1].PossibleChannels._value.split(',');
+                        if(channel_list_24.length > 0 ) {
+                            channel_list_24.forEach(number => {
+                                $('#wlan_channel_24').append($('<option>', { 
+                                    value: number,
+                                    text : number
+                                }));
+                            })
                         }
+
+                        $('#wlan_ssid_24').val( _data[1].SSID._value);
+                        if(!(_data[1].AutoChannelEnable._value == true))
+                            $('#wlan_channel_24').val(_data[1].Channel._value);
+                        if(_data[1].PreSharedKey[1]) $('#wlan_key_24').val(_data[1].PreSharedKey[1].KeyPassphrase._value);
+                        else $('#wlan_key_24').val('');
                     }
-                    $('#lan_hosts_list').val(_hosts_list); */
+                    if(_data[5]){
+                        if(_data[5].PossibleChannels._value) {
+                            let channel_list_5 = _data[5].PossibleChannels._value.split(',');
+                            if(channel_list_5.length > 0 ) {
+                                channel_list_5.forEach(number => {
+                                    $('#wlan_channel_5').append($('<option>', { 
+                                        value: number,
+                                        text : number
+                                    }));
+                                })
+                            }
+
+                            if(_data[5].PreSharedKey[1]) $('#wlan_key_5').val(_data[5].PreSharedKey[1].KeyPassphrase._value);
+                            else $('#wlan_key_5').val('');
+                            $('#wlan_ssid_5').val( _data[5].SSID._value);
+                            if(!(_data[5].AutoChannelEnable._value == true))
+                            $('#wlan_channel_5').val(_data[5].Channel._value);
+
+                            
+                            $('#wlan_ssid_5').prop('disabled', false);
+                            $('#btn_scan_5').prop('disabled', false);
+                        }
+                    } else {
+                        $('#wlan_ssid_5').val('Not support');
+                        $('#wlan_ssid_5').prop('disabled', true);
+                        $('#btn_scan_5').prop('disabled', true);
+                    }
+                    
+                   
                     
                 } else {
                     //console.log(res);
@@ -1023,6 +1030,23 @@ $(document).on('click','#btn_scan_5',() => {
 
 $('#device_voip_link').on("shown.bs.tab", function(evt) {
     current_config_tab = 'voip';
+    //console.log(device_summary_array);
+    if(parseInt(device_summary_array[7].split(':')[1]) == 0) {
+        alert('Device has no Voice port');
+        $('#line_1_number').prop('disabled', true);
+        $('#line_1_password').prop('disabled', true);
+        $('#line_2_number').prop('disabled', true);
+        $('#line_2_password').prop('disabled', true);
+        $('#proxy_server_ip').prop('disabled', true);
+        return 0;
+    } else {
+        $('#line_1_number').prop('disabled', false);
+        $('#line_1_password').prop('disabled', false);
+        $('#line_2_number').prop('disabled', false);
+        $('#line_2_password').prop('disabled', false);
+        $('#proxy_server_ip').prop('disabled', false);
+    }
+
     let _post_data = {
         id: 0,
         cn: $('#current_device_id').val(),
@@ -1090,7 +1114,7 @@ $('#device_ddns_link').on("shown.bs.tab", function(evt) {
                     //console.log(_res)
                     let _data = _res.data.InternetGatewayDevice.Services['X_ZTE-COM_DDNS'];
                     if(_data.Enable == undefined) {
-                        Alert('Data missing. Please refresh later.')
+                        $('#ddns_enable').val('false').trigger('change');
                     } else {
                         $('#ddns_enable').val( _data.Enable._value.toString()).trigger('change');
                         if(_data.ServiceType._value != '') {
@@ -1204,7 +1228,7 @@ function drawCPE(ctx,
     const voip_status = cpe_voip_status.split(',');
     const _status = $('#device_status').val();
 
-    //console.log(voip_status);
+    //console.log(wlan_status);
     const { width, height } = canvas.getBoundingClientRect();
     ctx.clearRect(0, 0, width, height);
     ctx.beginPath();
@@ -1298,7 +1322,7 @@ function drawCPE(ctx,
                     case 'WiFi':
                         for(let i = 0; i < value; i++) {
                         //console.log('Draw wifi at' + i * 50);
-                        if(wlan_status[i+2] === "Up") {
+                        if(wlan_status[i+2] === "Up" || wlan_status[i+1] === "Up") {
                                 ctx.drawImage(wifi_up_image,
                                     cpe_layout.wlan.x + (i * 200),
                                     cpe_layout.wlan.y,
@@ -1314,13 +1338,22 @@ function drawCPE(ctx,
                                 );
                         }
                         
+                        
                             ctx.font = "14px Arial";
                             ctx.lineWidth = 3;
                             ctx.fillStyle = "red";
-                            ctx.fillText(wlan_status[i + 4],
-                                cpe_layout.wlan.x + (i * 200) + 40,
-                                cpe_layout.wlan.y + 40
-                            );
+                            
+                            if(wlan_status[i+2] === "Up") {
+                                ctx.fillText(wlan_status[i + 4],
+                                    cpe_layout.wlan.x + (i * 200) + 40,
+                                    cpe_layout.wlan.y + 40
+                                );
+                            } else if(wlan_status[i+1] === "Up") {
+                                ctx.fillText(wlan_status[i + 2],
+                                    cpe_layout.wlan.x + (i * 200) + 40,
+                                    cpe_layout.wlan.y + 40
+                                );
+                            }
                             ctx.fillText(wlan_status[i],
                                 cpe_layout.wlan.x + (i * 200) - 40,
                                 cpe_layout.wlan.y + 70

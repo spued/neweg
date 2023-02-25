@@ -34,15 +34,16 @@
         
         <div class="col-xl-12">
           <div class="main_search">
-            
               <div class="input-group">
-                
                   <input type="text" class="form-control" id="search_keyword" placeholder="Fill the number for searching."/>
                   <div class="input-group-addon">
                       <button class="form-control btn btn-success btn-search" id="search_button" aria-describedby="search_keyword">Search</button>
                   </div>
               </div>
-              <label class="text-success" id="device_note_pre_search"></label>
+              <div class="input-group-addon">
+                <label>Device note:</label>
+                <input type="text" class="form-control text-success" id="device_note_pre_search" readonly/>
+              </div>
           </div>
           <input type="hidden" id="current_device_id" name="current_device_id" value="-">
           <input type="hidden" id="current_circuit_number" name="current_circuit_number" value="-">

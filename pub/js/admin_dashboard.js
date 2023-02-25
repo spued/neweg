@@ -18,7 +18,6 @@ window.addEventListener('load', function() {
         prefix : 0
     }, (res) => {
         
-        console.log(res.data);
         prefixBarChart.canvas.parentNode.style.height = '480px';
         prefixBarChart.canvas.parentNode.style.width = '480px';
 
