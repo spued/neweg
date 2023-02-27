@@ -105,7 +105,9 @@ $('.btn-history-cpe').on('click', function(){
 $('#search_button').on('click', function (evt) {
     //console.log('sEarch cli k!');
     const regex = RegExp('^[0-9]{4}j[0-9]{4}');
-    if(!regex.test($('#search_keyword').val())) {
+    const regex2 = RegExp('^SYC.{10}');
+    const _test = (regex.test($('#search_keyword').val()) || regex2.test($('#search_keyword').val()));
+    if(!(_test)) {
         alert('Incorrect format (XXXXjXXXX)');
         return 0;
     }
@@ -674,30 +676,34 @@ $('#device_system_link').on("shown.bs.tab", function(evt) {
     }
     if(_post_data.cn != undefined) {
         $.post('/device_refresh_params', _post_data, (res) => {
+           // console.log(res);
             if(res.code == 0) {
-                //return res.data;
+                
             } else {
                 //console.log(res);
             }
         }).then((data) => {
-            
-            $.post('/device_get_params', {
+            const _post_data = {
                 id : data.data.device,
                 obj : data.data.objectName
-            }, (res) => {
+            };
+            //console.log(_post_data)
+            $.post('/device_get_params', _post_data , (res) => {
                 if(res.code == 0) {
-                    let _data = res.data.InternetGatewayDevice.DeviceInfo;
-                    //console.log(_data);
-                    if('UpTime' in _data) {
-                        //console.log('get uptime');
-                        var duration = formatTime(_data.UpTime._value);
-                        $('#uptime').val(duration + ' (' + _data.UpTime._value + ' seconds.)');
-                    } else {
-                        //console.log('no uptime');
-                        $('#uptime').val('Not available');
-                    }
+                    if(res.data) {
+                        let _data = res.data.InternetGatewayDevice.DeviceInfo;
                     
-                    $('#provisioning_code').val(_data.ProvisioningCode._value);
+                        if('UpTime' in _data) {
+                            //console.log('get uptime');
+                            var duration = formatTime(_data.UpTime._value);
+                            $('#uptime').val(duration + ' (' + _data.UpTime._value + ' seconds.)');
+                        } else {
+                            //console.log('no uptime');
+                            $('#uptime').val('Not available');
+                        }
+                        
+                        $('#provisioning_code').val(_data.ProvisioningCode._value);
+                    }
                     
                 } else {
                     
@@ -771,6 +777,9 @@ $('#device_lan_link').on("shown.bs.tab", function(evt) {
                 obj : data.data.objectName
             }, (res) => {
                 if(res.code == 0) {
+                    if(!res.data) {
+                        return 0;
+                    }
                     let _data = res.data.InternetGatewayDevice.LANDevice[1].LANHostConfigManagement;
                     let number_host = parseInt(res.data.InternetGatewayDevice.LANDevice[1].Hosts.HostNumberOfEntries._value);
                     let hosts = res.data.InternetGatewayDevice.LANDevice[1].Hosts;
@@ -847,6 +856,11 @@ $('#device_wlan_link').on("shown.bs.tab", function(evt) {
         $('#btn_scan_5').prop('disabled', true);
         $('#wlan_ssid_24').prop('disabled', true);
         $('#btn_scan_24').prop('disabled', true);
+
+        $('#wlan_ssid_5').val('');
+        $('#wlan_key_5').val('');
+        $('#wlan_ssid_24').val('');
+        $('#wlan_key_24').val('');
         return 0;
     }
     let _post_data = {
@@ -1038,6 +1052,12 @@ $('#device_voip_link').on("shown.bs.tab", function(evt) {
         $('#line_2_number').prop('disabled', true);
         $('#line_2_password').prop('disabled', true);
         $('#proxy_server_ip').prop('disabled', true);
+
+        $('#line_1_number').val('');
+        $('#line_1_password').val('');
+        $('#line_2_number').val('');
+        $('#line_2_password').val('');
+        $('#proxy_server_ip').val('0.0.0.0');
         return 0;
     } else {
         $('#line_1_number').prop('disabled', false);

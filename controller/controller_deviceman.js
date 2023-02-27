@@ -151,7 +151,7 @@ const post_device_history_load = async (req, res) => {
 }
 
 const post_refresh_params = (req, res) => {
-    console.log("Controller: Main: Post Device refresh");
+    console.log("Controller: Main: Post Device refresh " + req.body.cn);
     resData = {
         code : 1,
         msg : 'Error : Default' 
@@ -164,7 +164,7 @@ const post_refresh_params = (req, res) => {
             "objectName": req.body.obj
         }).then((response) => {
         // handle success
-        console.log(response.data);
+        //console.log(response.data);
         resData.data = response.data;
         resData.code = 0;
         resData.msg = 'ok';
@@ -185,7 +185,7 @@ const post_query_params = (req, res) => {
     
     const search_query = '{"_id" : "'+ req.body.id +'"}'; 
     const filter = req.body.obj;
-
+    //console.log(req.body)
     //console.log(search_query + filter);
     axios.get(process.env.ACS_API_DEVICES, { 
         params: { 
